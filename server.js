@@ -29,13 +29,13 @@ app.options('*', cors());
 const router = require('./server/routes');
 app.use('/', router);
 
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, 'dist')));
+// if (process.env.NODE_ENV === 'production') {
+//     app.use(express.static(path.join(__dirname, 'dist')));
 
-    app.get('/', (req, res) => {
-        res.sendFile(path.join(__dirname, 'index.html'));
-    })
-}
+//     app.get('/', (req, res) => {
+//         res.sendFile(path.join(__dirname, 'index.html'));
+//     })
+// }
 
 // Start server
 const PORT = process.env.PORT || 3001;

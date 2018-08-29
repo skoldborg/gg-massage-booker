@@ -16,7 +16,7 @@ class TimeSlotsManager extends Component {
     }
 
     async getTimeSlots() {
-        const response = await fetch('http://localhost:3001/timeslots', {
+        const response = await fetch('https://gg-massage-booker.herokuapp.com/timeslots', {
             'Access-Control-Allow-Origin': '*',
             'Accept': 'application/json'
         })
@@ -29,7 +29,7 @@ class TimeSlotsManager extends Component {
     }
 
     async updateTimeSlot(id, client) {
-        await fetch(`http://localhost:3001/timeslots/${id}`, {
+        await fetch(`https://gg-massage-booker.herokuapp.com/timeslots/${id}`, {
             method: 'POST',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -44,7 +44,7 @@ class TimeSlotsManager extends Component {
 
     async addTimeSlot(name, time) {
         if (name !== '' && time !== '') {
-            await fetch(`http://localhost:3001/timeslots`, {
+            await fetch(`https://gg-massage-booker.herokuapp.com/timeslots`, {
                 method: 'POST',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
