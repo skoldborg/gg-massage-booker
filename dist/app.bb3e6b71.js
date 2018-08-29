@@ -12466,7 +12466,7 @@ var TimeSlotsManager = function (_Component) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 _context.next = 2;
-                                return fetch('http://localhost:3001/timeslots', {
+                                return fetch('https://gg-massage-booker.herokuapp.com/timeslots', {
                                     'Access-Control-Allow-Origin': '*',
                                     'Accept': 'application/json'
                                 });
@@ -12507,7 +12507,7 @@ var TimeSlotsManager = function (_Component) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
                                 _context2.next = 2;
-                                return fetch('http://localhost:3001/timeslots/' + id, {
+                                return fetch('https://gg-massage-booker.herokuapp.com/timeslots/' + id, {
                                     method: 'POST',
                                     headers: {
                                         'Access-Control-Allow-Origin': '*',
@@ -12549,7 +12549,7 @@ var TimeSlotsManager = function (_Component) {
                                 }
 
                                 _context3.next = 3;
-                                return fetch('http://localhost:3001/timeslots', {
+                                return fetch('https://gg-massage-booker.herokuapp.com/timeslots', {
                                     method: 'POST',
                                     headers: {
                                         'Access-Control-Allow-Origin': '*',
@@ -12585,6 +12585,8 @@ var TimeSlotsManager = function (_Component) {
         value: function render() {
             var _this2 = this;
 
+            console.log(this.props.admin);
+
             return (0, _preact.h)(
                 'div',
                 { className: 'time-slots-manager' },
@@ -12601,7 +12603,7 @@ var TimeSlotsManager = function (_Component) {
                         'Inga tider inlagda'
                     )
                 ),
-                (0, _preact.h)(
+                this.props.admin && (0, _preact.h)(
                     'div',
                     { 'class': 'time-slots-manager__add' },
                     (0, _preact.h)(
@@ -12997,7 +12999,7 @@ var Main = function (_Component) {
                     { 'class': 'main__subtitle' },
                     'Tider'
                 ),
-                (0, _preact.h)(_components.TimeSlotsManager, null)
+                (0, _preact.h)(_components.TimeSlotsManager, { admin: false })
             );
         }
     }]);
@@ -13239,7 +13241,7 @@ var Admin = function (_Component) {
                     { 'class': 'main__subtitle' },
                     'Tider'
                 ),
-                (0, _preact.h)(_components.TimeSlotsManager, null)
+                (0, _preact.h)(_components.TimeSlotsManager, { admin: true })
             );
         }
     }]);
@@ -13316,7 +13318,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '56615' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '57954' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

@@ -75,11 +75,14 @@ class TimeSlotsManager extends Component {
                             <p class="time-slots-manager__empty-msg">Inga tider inlagda</p>
                         )}
                 </div>
-                <div class="time-slots-manager__add">
-                    <h2 class="time-slots-manager__subtitle">Lägg till en tid</h2>
 
-                    <AddTimeSlot addTimeSlot={ (name, time) => this.addTimeSlot(name, time) }/>
-                </div>
+                {this.props.admin &&
+                    <div class="time-slots-manager__add">
+                        <h2 class="time-slots-manager__subtitle">Lägg till en tid</h2>
+
+                        <AddTimeSlot addTimeSlot={ (name, time) => this.addTimeSlot(name, time) }/>
+                    </div>
+                }
             </div>
         )
     }

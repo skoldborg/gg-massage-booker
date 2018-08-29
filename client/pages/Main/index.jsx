@@ -10,7 +10,7 @@ class Main extends Component {
             <div class="main">
                 <h2 class="main__subtitle">Tider</h2>
                 
-                <TimeSlotsManager />
+                <TimeSlotsManager admin={false} />
             </div>
         )   
     }
