@@ -10,6 +10,9 @@ class TimeSlot extends Component {
     handleChange(e, id) {
         const client = e.target.value;
 
+        this.input.parentNode.classList.add('time-slot--taken');
+        this.input.blur();
+
         this.props.updateTimeSlot(id, client)
     }
 
@@ -22,6 +25,7 @@ class TimeSlot extends Component {
                     id={`input-${time}-${name}`}
                     value={client}
                     onChange={e => this.handleChange(e, _id)}
+                    ref={input => { this.input = input }}
                 >
                     <div>{client}</div>
                 </input>

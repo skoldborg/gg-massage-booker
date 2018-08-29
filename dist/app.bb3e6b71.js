@@ -12363,6 +12363,9 @@ var TimeSlot = function (_Component) {
         value: function handleChange(e, id) {
             var client = e.target.value;
 
+            this.input.parentNode.classList.add('time-slot--taken');
+            this.input.blur();
+
             this.props.updateTimeSlot(id, client);
         }
     }, {
@@ -12387,6 +12390,9 @@ var TimeSlot = function (_Component) {
                         value: client,
                         onChange: function onChange(e) {
                             return _this2.handleChange(e, _id);
+                        },
+                        ref: function ref(input) {
+                            _this2.input = input;
                         }
                     },
                     (0, _preact.h)(
@@ -12584,8 +12590,6 @@ var TimeSlotsManager = function (_Component) {
         key: 'render',
         value: function render() {
             var _this2 = this;
-
-            console.log(this.props.admin);
 
             return (0, _preact.h)(
                 'div',
@@ -13318,7 +13322,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '57954' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '60776' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
