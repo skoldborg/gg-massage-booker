@@ -42,7 +42,7 @@ class TimeSlot extends Component {
                     <span class="time-slot__label-content">{time} - {name}</span>
                 </label>
 
-                {admin && client !== '' &&
+                {admin &&
                     <button class="time-slot__remove-btn" onClick={() => this.props.removeTimeSlot(_id)}></button>
                 }
             </div>

@@ -12420,7 +12420,7 @@ var TimeSlot = function (_Component) {
                         name
                     )
                 ),
-                admin && client !== '' && (0, _preact.h)('button', { 'class': 'time-slot__remove-btn', onClick: function onClick() {
+                admin && (0, _preact.h)('button', { 'class': 'time-slot__remove-btn', onClick: function onClick() {
                         return _this2.props.removeTimeSlot(_id);
                     } })
             );
@@ -12718,6 +12718,9 @@ var AddTimeSlot = function (_Component) {
             var inputName = e.target.getAttribute('name');
 
             this.setState(_defineProperty({}, inputName, e.target.value));
+
+            this.nameInput.value = '';
+            this.timeInput.value = '';
         }
     }, {
         key: 'handleKeyUp',
@@ -13373,7 +13376,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '52409' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '57644' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

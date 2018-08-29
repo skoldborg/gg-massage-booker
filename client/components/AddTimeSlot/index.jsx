@@ -16,6 +16,9 @@ class AddTimeSlot extends Component {
         this.setState({
             [inputName]: e.target.value
         });
+
+        this.nameInput.value = '';
+        this.timeInput.value = '';
     }
 
     handleKeyUp(e) {

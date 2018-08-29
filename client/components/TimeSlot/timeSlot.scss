@@ -95,9 +95,13 @@
         height: 2px;
         background: #000;
         position: absolute;
-        bottom: 27px;
+        bottom: 40px;
         right: 20px;
         transform: rotate(45deg);
+
+        .time-slot--taken & {
+            bottom: 27px;
+        }
     }
 
     &:before {

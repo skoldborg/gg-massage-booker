@@ -153,9 +153,11 @@ button::-moz-focus-inner {
     height: 2px;
     background: #000;
     position: absolute;
-    bottom: 27px;
+    bottom: 40px;
     right: 20px;
     transform: rotate(45deg); }
+    .time-slot--taken .time-slot__remove-btn:before, .time-slot--taken .time-slot__remove-btn:after {
+      bottom: 27px; }
   .time-slot__remove-btn:before {
     transform: rotate(-45deg); }
   .time-slot__remove-btn:hover:before, .time-slot__remove-btn:hover:after {
