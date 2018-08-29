@@ -16,7 +16,7 @@ class TimeSlotsManager extends Component {
     }
 
     async getTimeSlots() {
-        const response = await fetch('https://gg-massage-booker.herokuapp.com/timeslots', {
+        const response = await fetch('http://localhost:3001/timeslots', {
             'Access-Control-Allow-Origin': '*',
             'Accept': 'application/json'
         })
@@ -29,7 +29,7 @@ class TimeSlotsManager extends Component {
     }
 
     async updateTimeSlot(id, client) {
-        await fetch(`https://gg-massage-booker.herokuapp.com/timeslots/${id}`, {
+        await fetch(`http://localhost:3001/timeslots/${id}`, {
             method: 'POST',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -44,7 +44,7 @@ class TimeSlotsManager extends Component {
 
     async addTimeSlot(name, time) {
         if (name !== '' && time !== '') {
-            await fetch(`https://gg-massage-booker.herokuapp.com/timeslots`, {
+            await fetch(`http://localhost:3001/timeslots`, {
                 method: 'POST',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -61,6 +61,17 @@ class TimeSlotsManager extends Component {
         }
     }
 
+    async removeTimeSlot(id) {
+        await fetch(`http://localhost:3001/timeslots/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+
+        this.getTimeSlots();
+    }
+
     render() {
         return (
             <div className="time-slots-manager">
@@ -68,7 +79,12 @@ class TimeSlotsManager extends Component {
                     {this.state.timeSlots !== [] ? (
                         this.state.timeSlots.map(timeSlot => {
                             return (
-                                <TimeSlot {...timeSlot} updateTimeSlot={(id, client) => this.updateTimeSlot(id, client)} />
+                                <TimeSlot 
+                                    {...timeSlot} 
+                                    updateTimeSlot={(id, client) => this.updateTimeSlot(id, client)} 
+                                    removeTimeSlot={(id) => this.removeTimeSlot(id)} 
+                                    admin={this.props.admin}    
+                                />
                             )
                         })
                     ) : (

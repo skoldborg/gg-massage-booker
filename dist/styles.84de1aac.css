@@ -83,18 +83,16 @@ button::-moz-focus-inner {
   font-weight: bold;
   font-size: 1.2em; }
 
-.time-slot--taken .time-slot__input {
+.time-slot--taken .time-slot__input + .time-slot__label:before {
+  cursor: default;
   pointer-events: none;
-  cursor: default; }
-  .time-slot--taken .time-slot__input + .time-slot__label:before {
-    cursor: default;
-    pointer-events: none;
-    border-width: 8px;
-    border-color: #189F97;
-    border-top-width: 2em; }
-  .time-slot--taken .time-slot__input + .time-slot__label .time-slot__label-content {
-    transform: translate3d(0, -1.2em, 0) scale3d(0.75, 0.75, 1) translateZ(1px);
-    color: #fff; }
+  border-width: 8px;
+  border-color: #189F97;
+  border-top-width: 2em; }
+
+.time-slot--taken .time-slot__input + .time-slot__label .time-slot__label-content {
+  transform: translate3d(0, -1.2em, 0) scale3d(0.75, 0.75, 1) translateZ(1px);
+  color: #fff; }
 
 .time-slot__input {
   display: block;
@@ -140,6 +138,29 @@ button::-moz-focus-inner {
   text-rendering: geometricPrecision;
   color: #6A7988; }
 
+.time-slot__remove-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50px;
+  height: 100%;
+  background: transparent;
+  z-index: 100; }
+  .time-slot__remove-btn:before, .time-slot__remove-btn:after {
+    content: '';
+    display: block;
+    width: 15px;
+    height: 2px;
+    background: #000;
+    position: absolute;
+    bottom: 27px;
+    right: 20px;
+    transform: rotate(45deg); }
+  .time-slot__remove-btn:before {
+    transform: rotate(-45deg); }
+  .time-slot__remove-btn:hover:before, .time-slot__remove-btn:hover:after {
+    background: #FF0000; }
+
 .time-slots-manager__list {
   width: 100%;
   margin-bottom: 4em; }
@@ -171,7 +192,8 @@ button::-moz-focus-inner {
 
 .add-time-slot__input {
   padding: 1.6em 1em;
-  background: #fff; }
+  background: #fff;
+  margin-bottom: 1em; }
 
 .add-time-slot__btn {
   padding: 1.2em 1em;

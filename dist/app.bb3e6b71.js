@@ -12363,7 +12363,9 @@ var TimeSlot = function (_Component) {
         value: function handleChange(e, id) {
             var client = e.target.value;
 
-            this.input.parentNode.classList.add('time-slot--taken');
+            if (client !== '') {
+                this.input.parentNode.classList.add('time-slot--taken');
+            }
             this.input.blur();
 
             this.props.updateTimeSlot(id, client);
@@ -12376,7 +12378,8 @@ var TimeSlot = function (_Component) {
             var _id = _ref._id,
                 name = _ref.name,
                 time = _ref.time,
-                client = _ref.client;
+                client = _ref.client,
+                admin = _ref.admin;
 
             return (0, _preact.h)(
                 'div',
@@ -12384,6 +12387,7 @@ var TimeSlot = function (_Component) {
                 (0, _preact.h)(
                     'input',
                     {
+                        style: client !== '' && !admin ? 'pointer-events: none; cursor:default;' : '',
                         'class': 'time-slot__input',
                         type: 'text',
                         id: 'input-' + time + '-' + name,
@@ -12403,7 +12407,11 @@ var TimeSlot = function (_Component) {
                 ),
                 (0, _preact.h)(
                     'label',
-                    { 'class': 'time-slot__label', 'for': 'input-' + time + '-' + name },
+                    {
+                        style: client !== '' && !admin ? 'pointer-events: none; cursor:default;' : '',
+                        'class': 'time-slot__label',
+                        'for': 'input-' + time + '-' + name
+                    },
                     (0, _preact.h)(
                         'span',
                         { 'class': 'time-slot__label-content' },
@@ -12411,7 +12419,10 @@ var TimeSlot = function (_Component) {
                         ' - ',
                         name
                     )
-                )
+                ),
+                admin && client !== '' && (0, _preact.h)('button', { 'class': 'time-slot__remove-btn', onClick: function onClick() {
+                        return _this2.props.removeTimeSlot(_id);
+                    } })
             );
         }
     }]);
@@ -12472,7 +12483,7 @@ var TimeSlotsManager = function (_Component) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 _context.next = 2;
-                                return fetch('https://gg-massage-booker.herokuapp.com/timeslots', {
+                                return fetch('http://localhost:3001/timeslots', {
                                     'Access-Control-Allow-Origin': '*',
                                     'Accept': 'application/json'
                                 });
@@ -12513,7 +12524,7 @@ var TimeSlotsManager = function (_Component) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
                                 _context2.next = 2;
-                                return fetch('https://gg-massage-booker.herokuapp.com/timeslots/' + id, {
+                                return fetch('http://localhost:3001/timeslots/' + id, {
                                     method: 'POST',
                                     headers: {
                                         'Access-Control-Allow-Origin': '*',
@@ -12555,7 +12566,7 @@ var TimeSlotsManager = function (_Component) {
                                 }
 
                                 _context3.next = 3;
-                                return fetch('https://gg-massage-booker.herokuapp.com/timeslots', {
+                                return fetch('http://localhost:3001/timeslots', {
                                     method: 'POST',
                                     headers: {
                                         'Access-Control-Allow-Origin': '*',
@@ -12587,6 +12598,40 @@ var TimeSlotsManager = function (_Component) {
             return addTimeSlot;
         }()
     }, {
+        key: 'removeTimeSlot',
+        value: function () {
+            var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(id) {
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                    while (1) {
+                        switch (_context4.prev = _context4.next) {
+                            case 0:
+                                _context4.next = 2;
+                                return fetch('http://localhost:3001/timeslots/' + id, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Access-Control-Allow-Origin': '*'
+                                    }
+                                });
+
+                            case 2:
+
+                                this.getTimeSlots();
+
+                            case 3:
+                            case 'end':
+                                return _context4.stop();
+                        }
+                    }
+                }, _callee4, this);
+            }));
+
+            function removeTimeSlot(_x5) {
+                return _ref4.apply(this, arguments);
+            }
+
+            return removeTimeSlot;
+        }()
+    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
@@ -12598,9 +12643,15 @@ var TimeSlotsManager = function (_Component) {
                     'div',
                     { className: 'time-slots-manager__list' },
                     this.state.timeSlots !== [] ? this.state.timeSlots.map(function (timeSlot) {
-                        return (0, _preact.h)(_components.TimeSlot, _extends({}, timeSlot, { updateTimeSlot: function updateTimeSlot(id, client) {
+                        return (0, _preact.h)(_components.TimeSlot, _extends({}, timeSlot, {
+                            updateTimeSlot: function updateTimeSlot(id, client) {
                                 return _this2.updateTimeSlot(id, client);
-                            } }));
+                            },
+                            removeTimeSlot: function removeTimeSlot(id) {
+                                return _this2.removeTimeSlot(id);
+                            },
+                            admin: _this2.props.admin
+                        }));
                     }) : (0, _preact.h)(
                         'p',
                         { 'class': 'time-slots-manager__empty-msg' },
@@ -13322,7 +13373,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '60776' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '52409' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

@@ -46,4 +46,16 @@ router.post('/timeslots/:id', async (req, res) => {
     }
 })
 
+router.delete('/timeslots/:id', async (req, res) => {
+    console.log(req.params.id);
+
+    try {
+        await TimeSlot.findByIdAndRemove(req.params.id);
+
+        res.status(200).send('Time slot removed');
+    } catch (error) {
+        res.send(500).send(`Something went wrong: ${error}`);
+    }
+})
+
 module.exports = router;
