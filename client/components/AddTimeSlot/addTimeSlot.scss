@@ -1,0 +1,38 @@
+.add-time-slot__slots {
+    max-width: 640px;
+    margin: 1em auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-bottom: 56px;
+    
+    @media screen and (min-width: 768px) {
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 16px;
+    }
+}
+
+.add-time-slot__label,
+.add-time-slot__input {
+    display: block;
+    width: 100%;
+}
+
+.add-time-slot__label {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 0.5em;
+    color: #6A7988;
+}
+
+.add-time-slot__input {
+    padding: 1.6em 1em;
+    background: #fff;
+}
+
+.add-time-slot__btn {
+    padding: 1.2em 1em;
+    background: #189F97;
+    color: #fff;
+    font-weight: bold;
+    margin: 0 auto;
+}
