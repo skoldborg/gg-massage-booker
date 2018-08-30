@@ -35,7 +35,7 @@ class AddTimeSlot extends Component {
             <div class="add-time-slot">
                 <div class="add-time-slot__slots">
                     <div class="add-time-slot__input-wrapper">
-                        <label class="add-time-slot__label" htmlFor="name">Namn</label>
+                        <label class="add-time-slot__label" htmlFor="name">Massör</label>
                         <input class="add-time-slot__input" type="text" name="name" id="name" 
                             ref={nameInput => { this.nameInput = nameInput }}
                             onChange={e => this.handleChange(e)} 

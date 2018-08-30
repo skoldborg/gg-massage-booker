@@ -12749,7 +12749,7 @@ var AddTimeSlot = function (_Component) {
                         (0, _preact.h)(
                             'label',
                             { 'class': 'add-time-slot__label', htmlFor: 'name' },
-                            'Namn'
+                            'Mass\xF6r'
                         ),
                         (0, _preact.h)('input', { 'class': 'add-time-slot__input', type: 'text', name: 'name', id: 'name',
                             ref: function ref(nameInput) {
