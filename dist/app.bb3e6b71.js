@@ -12420,7 +12420,7 @@ var TimeSlot = function (_Component) {
                         name
                     )
                 ),
-                admin && (0, _preact.h)('button', { 'class': 'time-slot__remove-btn', onClick: function onClick() {
+                admin && client === '' && (0, _preact.h)('button', { 'class': 'time-slot__remove-btn', onClick: function onClick() {
                         return _this2.props.removeTimeSlot(_id);
                     } })
             );
@@ -13376,7 +13376,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '51480' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '55024' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
