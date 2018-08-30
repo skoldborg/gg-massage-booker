@@ -7,7 +7,7 @@ const TimeSlot = mongoose.model('TimeSlot');
 router.get('/timeslots', async (req, res) => {
     try {
         const timeSlots = await TimeSlot.find().sort({
-            time: 'ascending'
+            added: 'ascending'
         });
 
         res.json(timeSlots);
@@ -28,8 +28,6 @@ router.post('/timeslots', async (req, res) => {
 })
 
 router.post('/timeslots/:id', async (req, res) => {
-    console.log('req body ', req.body);
-    
     try {
         const timeSlot = await TimeSlot.findByIdAndUpdate(
             req.params.id,

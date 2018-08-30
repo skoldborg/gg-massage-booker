@@ -62,7 +62,7 @@ class TimeSlotsManager extends Component {
     }
 
     async removeTimeSlot(id) {
-        await fetch(`http://localhost:3001/timeslots/${id}`, {
+        await fetch(`https://gg-massage-booker.herokuapp.com/timeslots/${id}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -73,9 +73,6 @@ class TimeSlotsManager extends Component {
     }
 
     render() {
-        console.log(this.state.timeSlots);
-        
-
         return (
             <div className="time-slots-manager">
                 <div className="time-slots-manager__list">
