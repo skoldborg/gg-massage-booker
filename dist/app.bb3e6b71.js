@@ -12483,7 +12483,7 @@ var TimeSlotsManager = function (_Component) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 _context.next = 2;
-                                return fetch('http://localhost:3001/timeslots', {
+                                return fetch('https://gg-massage-booker.herokuapp.com/timeslots', {
                                     'Access-Control-Allow-Origin': '*',
                                     'Accept': 'application/json'
                                 });
@@ -12524,7 +12524,7 @@ var TimeSlotsManager = function (_Component) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
                                 _context2.next = 2;
-                                return fetch('http://localhost:3001/timeslots/' + id, {
+                                return fetch('https://gg-massage-booker.herokuapp.com/timeslots/' + id, {
                                     method: 'POST',
                                     headers: {
                                         'Access-Control-Allow-Origin': '*',
@@ -12566,7 +12566,7 @@ var TimeSlotsManager = function (_Component) {
                                 }
 
                                 _context3.next = 3;
-                                return fetch('http://localhost:3001/timeslots', {
+                                return fetch('https://gg-massage-booker.herokuapp.com/timeslots', {
                                     method: 'POST',
                                     headers: {
                                         'Access-Control-Allow-Origin': '*',
@@ -13376,7 +13376,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '57644' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '51480' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
