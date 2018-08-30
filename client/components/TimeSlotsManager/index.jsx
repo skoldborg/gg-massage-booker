@@ -73,6 +73,9 @@ class TimeSlotsManager extends Component {
     }
 
     render() {
+        console.log(this.state.timeSlots);
+        
+
         return (
             <div className="time-slots-manager">
                 <div className="time-slots-manager__list">
@@ -88,8 +91,8 @@ class TimeSlotsManager extends Component {
                             )
                         })
                     ) : (
-                            <p class="time-slots-manager__empty-msg">Inga tider inlagda</p>
-                        )}
+                        <p class="time-slots-manager__empty-msg">Inga tider inlagda</p>
+                    )}
                 </div>
 
                 {this.props.admin &&
