@@ -2,6 +2,8 @@ import { h, render, Component } from 'preact';
 
 import { TimeSlot, AddTimeSlot } from '../../components';
 
+import rootPath from '../../rootPath';
+
 class TimeSlotsManager extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +18,7 @@ class TimeSlotsManager extends Component {
     }
 
     async getTimeSlots() {
-        const response = await fetch('https://gg-massage-booker.herokuapp.com/timeslots', {
+        const response = await fetch(`${rootPath}/timeslots`, {
             'Access-Control-Allow-Origin': '*',
             'Accept': 'application/json'
         })
@@ -26,10 +28,12 @@ class TimeSlotsManager extends Component {
         this.setState({
             timeSlots: timeSlots
         });
+
+        this.forceUpdate();
     }
 
     async updateTimeSlot(id, client) {
-        await fetch(`https://gg-massage-booker.herokuapp.com/timeslots/${id}`, {
+        await fetch(`${rootPath}/timeslots/${id}`, {
             method: 'POST',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -44,7 +48,7 @@ class TimeSlotsManager extends Component {
 
     async addTimeSlot(name, time) {
         if (name !== '' && time !== '') {
-            await fetch(`https://gg-massage-booker.herokuapp.com/timeslots`, {
+            await fetch(`${rootPath}/timeslots`, {
                 method: 'POST',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -62,7 +66,7 @@ class TimeSlotsManager extends Component {
     }
 
     async removeTimeSlot(id) {
-        await fetch(`https://gg-massage-booker.herokuapp.com/timeslots/${id}`, {
+        await fetch(`${rootPath}/timeslots/${id}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -73,22 +77,58 @@ class TimeSlotsManager extends Component {
     }
 
     render() {
+        let freeSlots = [];
+        let bookedSlots = [];
+        
+        this.state.timeSlots.map(timeSlot => { 
+            if (timeSlot.client !== '') { 
+                bookedSlots.push(timeSlot);
+            } else {
+                freeSlots.push(timeSlot);
+            }
+        });
+
         return (
             <div className="time-slots-manager">
-                <div className="time-slots-manager__list">
-                    {this.state.timeSlots !== [] ? (
-                        this.state.timeSlots.map(timeSlot => {
-                            return (
-                                <TimeSlot 
-                                    {...timeSlot} 
-                                    updateTimeSlot={(id, client) => this.updateTimeSlot(id, client)} 
-                                    removeTimeSlot={(id) => this.removeTimeSlot(id)} 
-                                    admin={this.props.admin}    
-                                />
-                            )
-                        })
+                <div className={`time-slots-manager__list ` + (bookedSlots.length ? '' : 'time-slots-manager__list--single')}>
+                    {bookedSlots.length ? (
+                        [<div className="time-slots-manager__list-col">
+                            {freeSlots.map(timeSlot => {
+                                return (
+                                    <TimeSlot
+                                        {...timeSlot}
+                                        updateTimeSlot={(id, client) => this.updateTimeSlot(id, client)}
+                                        removeTimeSlot={(id) => this.removeTimeSlot(id)}
+                                        admin={this.props.admin}
+                                    />
+                                )
+                            })}
+                        </div>,
+                        <div className="time-slots-manager__list-col">
+                            {bookedSlots.map(timeSlot => {
+                                return (
+                                    <TimeSlot
+                                        {...timeSlot}
+                                        updateTimeSlot={(id, client) => this.updateTimeSlot(id, client)}
+                                        removeTimeSlot={(id) => this.removeTimeSlot(id)}
+                                        admin={this.props.admin}
+                                    />
+                                )
+                            })}
+                        </div>]
                     ) : (
-                        <p class="time-slots-manager__empty-msg">Inga tider inlagda</p>
+                        <div className="time-slots-manager__list-col">
+                            {freeSlots.map(timeSlot => {
+                                return (
+                                    <TimeSlot
+                                        {...timeSlot}
+                                        updateTimeSlot={(id, client) => this.updateTimeSlot(id, client)}
+                                        removeTimeSlot={(id) => this.removeTimeSlot(id)}
+                                        admin={this.props.admin}
+                                    />
+                                )
+                            })}
+                        </div>
                     )}
                 </div>
 

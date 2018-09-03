@@ -8,12 +8,14 @@ class TimeSlot extends Component {
     }
 
     handleChange(e, id) {
+        e.preventDefault();
+
         const client = e.target.value;
 
-        if (client !== '') {
-            this.input.parentNode.classList.add('time-slot--taken');
+        if (client !== '' && e.target.parentNode.getAttribute(id) === id) {
+            e.target.parentNode.classList.add('time-slot--taken');
         }
-        this.input.blur();
+        e.target.blur();
         
 
         this.props.updateTimeSlot(id, client)
@@ -21,7 +23,7 @@ class TimeSlot extends Component {
 
     render({ _id, name, time, client, admin }) {
         return (
-            <div class={"time-slot" + (client !== '' ? " time-slot--taken" : "")}>
+            <div id={_id} class={"time-slot" + (client !== '' ? " time-slot--taken" : "")}>
                 <input 
                     style={client !== '' && !admin ? 'pointer-events: none; cursor:default;' : ''}
                     class="time-slot__input" 

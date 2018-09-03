@@ -1,11 +1,22 @@
-.time-slots-manager {
-
-}
-
 .time-slots-manager__list {
     width: 100%;
     margin-bottom: 4em;
+    display: grid;
+    grid-template-columns: 1fr;
+
+    @media screen and (min-width: 768px) {
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 16px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
 }
+
+.time-slots-manager__list--single {
+    grid-template-columns: 1fr;
+}
+
+
 
 .time-slots-manager__subtitle {
     text-align: center;
