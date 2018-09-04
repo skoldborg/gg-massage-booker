@@ -1,7 +1,7 @@
 import { h, render, Component } from 'preact';
+import moment from 'moment';
 
 import { TimeSlot, AddTimeSlot } from '../../components';
-
 import rootPath from '../../rootPath';
 
 class TimeSlotsManager extends Component {
@@ -46,8 +46,8 @@ class TimeSlotsManager extends Component {
         this.getTimeSlots();
     }
 
-    async addTimeSlot(name, time) {
-        if (name !== '' && time !== '') {
+    async addTimeSlot(name, momentDate) {
+        if (name !== '' && moment.isMoment(momentDate)) {
             await fetch(`${rootPath}/timeslots`, {
                 method: 'POST',
                 headers: {
@@ -57,7 +57,8 @@ class TimeSlotsManager extends Component {
                 },
                 body: JSON.stringify({
                     name: name,
-                    time: time
+                    dateFormatted: momentDate.format('DD/MM HH:mm'),
+                    dateTimeISO: momentDate.toISOString()
                 })
             })
 

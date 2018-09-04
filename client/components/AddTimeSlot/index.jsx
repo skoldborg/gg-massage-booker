@@ -1,29 +1,42 @@
 import { h, render, Component } from 'preact';
 
+import Datetime from 'react-datetime';
+import '../../../node_modules/react-datetime/css/react-datetime.css';
+import moment from 'moment';
+import 'moment/locale/sv';
+
 class AddTimeSlot extends Component {
     constructor() {
         super();
 
         this.state = {
             name: '',
-            time: ''
+            momentDate: null,
         }
     }
 
-    handleChange(e) {
-        const inputName = e.target.getAttribute('name');
-
-        this.setState({
-            [inputName]: e.target.value
-        });
+    componentDidMount() {
+        moment.locale('sv');
     }
 
-    handleKeyUp(e) {
-        if (e.which === 13 && this.state.name !== '' && this.state.time !== '') {
-            this.props.addTimeSlot(this.state.name, this.state.time);
+    setDateTime(date) {
+        if (moment.isMoment(date)) {
+            this.setState({
+                momentDate: date
+            })
+        }
+    }
 
-            this.nameInput.value = '';
-            this.timeInput.value = '';
+    addTimeSlot() {
+        const {
+            name,
+            momentDate
+        } = this.state;
+
+        if (name !== '' && momentDate !== null) {            
+            this.props.addTimeSlot(name, momentDate);
+
+            // this.nameInput.value = '';
         }
     }
     
@@ -35,22 +48,28 @@ class AddTimeSlot extends Component {
                         <label class="add-time-slot__label" htmlFor="name">Massör</label>
                         <input class="add-time-slot__input" type="text" name="name" id="name" 
                             ref={nameInput => { this.nameInput = nameInput }}
-                            onChange={e => this.handleChange(e)} 
-                            onKeyUp={(e) => this.handleKeyUp(e)} 
+                            onChange={e => this.setState({ name: e.target.value })} 
+                            // onKeyUp={(e) => this.handleKeyUp(e)} 
                         />
                     </div>
                     
                     <div class="add-time-slot__input-wrapper">
                         <label class="add-time-slot__label" htmlFor="time">Tid</label>
-                        <input class="add-time-slot__input" type="text" name="time" id="time" 
+                        {/* <input class="add-time-slot__input" type="text" name="time" id="time" 
                             ref={timeInput => { this.timeInput = timeInput }}
                             onChange={e => this.handleChange(e)} 
                             onKeyUp={(e) => this.handleKeyUp(e)} 
+                        /> */}
+
+                        <Datetime 
+                            className="add-time-slot__rdt"
+                            timeFormat="HH:mm"
+                            onChange={date => this.setDateTime(date)}
                         />
                     </div>
                 </div>
 
-                <button class="add-time-slot__btn" onClick={e => this.props.addTimeSlot(this.state.name, this.state.time)}>Lägg till</button>
+                <button class="add-time-slot__btn" onClick={() => this.addTimeSlot()}>Lägg till</button>
             </div>
         )
     }

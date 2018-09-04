@@ -6,7 +6,11 @@ const TimeSlotSchema = new mongoose.Schema({
         trim: true,
         required: true
     },
-    time: {
+    dateFormatted: {
+        type: String,
+        required: true
+    },
+    dateTimeISO: {
         type: String,
         required: true
     },

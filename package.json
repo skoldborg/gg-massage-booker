@@ -24,18 +24,21 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-preact": "^1.1.0",
     "import-glob-loader": "^1.1.0",
+    "moment": "^2.22.2",
     "node-sass": "^4.9.3",
     "node-sass-glob-importer": "^5.2.0",
     "nodemon": "^1.18.3",
     "parcel-bundler": "^1.9.7",
     "preact-compat": "^3.18.3",
     "pug": "^2.0.3",
+    "react-datetime": "^2.15.0",
     "react-dom": "^16.4.2",
     "react-router-dom": "^4.3.1",
     "whatwg-fetch": "^2.0.4"
   },
   "alias": {
     "react": "preact-compat",
-    "react-dom": "preact-compat"
+    "react-dom": "preact-compat",
+    "create-react-class": "preact-compat/lib/create-react-class"
   }
 }

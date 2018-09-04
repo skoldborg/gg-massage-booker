@@ -21,14 +21,14 @@ class TimeSlot extends Component {
         this.props.updateTimeSlot(id, client)
     }
 
-    render({ _id, name, time, client, admin }) {
+    render({ _id, name, dateFormatted, client, admin }) {
         return (
             <div id={_id} class={"time-slot" + (client !== '' ? " time-slot--taken" : "")}>
                 <input 
                     style={client !== '' && !admin ? 'pointer-events: none; cursor:default;' : ''}
                     class="time-slot__input" 
                     type="text" 
-                    id={`input-${time}-${name}`}
+                    id={`input-${dateFormatted}-${name}`}
                     value={client}
                     onChange={e => this.handleChange(e, _id)}
                     ref={input => { this.input = input }}
@@ -39,9 +39,9 @@ class TimeSlot extends Component {
                 <label 
                     style={client !== '' && !admin ? 'pointer-events: none; cursor:default;' : ''}
                     class="time-slot__label" 
-                    for={`input-${time}-${name}`}
+                    for={`input-${dateFormatted}-${name}`}
                 >
-                    <span class="time-slot__label-content">{time} - {name}</span>
+                    <span class="time-slot__label-content">{dateFormatted} - {name}</span>
                 </label>
 
                 {admin && client === '' &&

@@ -7,7 +7,7 @@ const TimeSlot = mongoose.model('TimeSlot');
 router.get('/timeslots', async (req, res) => {
     try {
         const timeSlots = await TimeSlot.find().sort({
-            added: 'ascending'
+            dateTimeISO: 'ascending'
         });
 
         res.json(timeSlots);
@@ -35,8 +35,6 @@ router.post('/timeslots/:id', async (req, res) => {
                 $set: { client: req.body.client }
             }
         )
-        console.log(timeSlot);
-        
         
         res.status(200).json(timeSlot);
     } catch (error) {
@@ -45,8 +43,6 @@ router.post('/timeslots/:id', async (req, res) => {
 })
 
 router.delete('/timeslots/:id', async (req, res) => {
-    console.log(req.params.id);
-
     try {
         await TimeSlot.findByIdAndRemove(req.params.id);
 
