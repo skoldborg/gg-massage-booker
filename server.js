@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const path = require('path');
+const ejs = require('ejs');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -14,6 +15,14 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }, (error) => 
 });
 mongoose.Promise = global.Promise;
 
+// View engine
+app.set('views', __dirname + '/client');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
+// Static assets
+app.use(express.static(path.join(__dirname, 'dist')));
+
 // import models
 require(path.join(__dirname, 'server/models/TimeSlot'));
 
@@ -26,20 +35,12 @@ app.use(cors());
 app.options('*', cors());
 
 // Routes
-const router = require('./server/routes');
+const router = require('./server/routes/index');
 app.use('/', router);
 
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, 'dist')));
-
-    app.get('/', (req, res) => {
-        res.sendFile(path.join(__dirname, 'dist/index.html'));
-    })
-
-    app.get('/admin', (req, res) => {
-        res.sendFile(path.join(__dirname, 'dist/index.html'));
-    })
-}
+app.get('/*', (req, res) => {
+    res.render(path.join(__dirname, 'dist/index.html'));
+})
 
 // Start server
 const PORT = process.env.PORT || 3001;

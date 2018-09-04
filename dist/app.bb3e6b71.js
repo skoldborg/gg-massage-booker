@@ -17022,10 +17022,13 @@ var TimeSlotsManager = function (_Component) {
 
                             case 2:
                                 response = _context.sent;
-                                _context.next = 5;
+
+                                console.log(response);
+
+                                _context.next = 6;
                                 return response.json();
 
-                            case 5:
+                            case 6:
                                 timeSlots = _context.sent;
 
 
@@ -17035,7 +17038,7 @@ var TimeSlotsManager = function (_Component) {
 
                                 this.forceUpdate();
 
-                            case 8:
+                            case 9:
                             case 'end':
                                 return _context.stop();
                         }
@@ -19610,7 +19613,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '50036' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '64737' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

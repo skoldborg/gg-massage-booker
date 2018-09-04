@@ -22,6 +22,8 @@ class TimeSlotsManager extends Component {
             'Access-Control-Allow-Origin': '*',
             'Accept': 'application/json'
         })
+        console.log(response);
+        
 
         const timeSlots = await response.json();
 
