@@ -35,8 +35,6 @@ class AddTimeSlot extends Component {
 
         if (name !== '' && momentDate !== null) {            
             this.props.addTimeSlot(name, momentDate);
-
-            // this.nameInput.value = '';
         }
     }
     
@@ -48,18 +46,12 @@ class AddTimeSlot extends Component {
                         <label class="add-time-slot__label" htmlFor="name">Massör</label>
                         <input class="add-time-slot__input" type="text" name="name" id="name" 
                             ref={nameInput => { this.nameInput = nameInput }}
-                            onChange={e => this.setState({ name: e.target.value })} 
-                            // onKeyUp={(e) => this.handleKeyUp(e)} 
+                            onChange={e => this.setState({ name: e.target.value })}
                         />
                     </div>
                     
                     <div class="add-time-slot__input-wrapper">
                         <label class="add-time-slot__label" htmlFor="time">Tid</label>
-                        {/* <input class="add-time-slot__input" type="text" name="time" id="time" 
-                            ref={timeInput => { this.timeInput = timeInput }}
-                            onChange={e => this.handleChange(e)} 
-                            onKeyUp={(e) => this.handleKeyUp(e)} 
-                        /> */}
 
                         <Datetime 
                             className="add-time-slot__rdt"
@@ -69,7 +61,7 @@ class AddTimeSlot extends Component {
                     </div>
                 </div>
 
-                <button class="add-time-slot__btn" onClick={() => this.addTimeSlot()}>Lägg till</button>
+                <button class="button" onClick={() => this.addTimeSlot()}>Lägg till</button>
             </div>
         )
     }

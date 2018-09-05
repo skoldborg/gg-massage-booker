@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const path = require('path');
-const ejs = require('ejs');
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -19,6 +19,9 @@ mongoose.Promise = global.Promise;
 app.set('views', __dirname + '/client');
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
+
+// Cookies
+app.use(cookieParser())
 
 // Static assets
 app.use(express.static(path.join(__dirname, 'dist')));

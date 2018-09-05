@@ -4,18 +4,28 @@ exports.authorize = async function(req, res) {
     const code = req.query.code;
 
     if (code) {
-        let token;
-
         try {
-            token = await authHelper.getTokenFromCode(code, res);
+            const token = await authHelper.getTokenFromCode(code, res);
 
-            console.log('token: ', token);
+            console.log('Token saved to cookies');
         } catch (error) {
             console.error(`Error exchanging code for token ${error}`);
         }
     }
 
     res.redirect('/');
+}
+
+exports.gettoken = async function(req, res) {
+    const token = await authHelper.getAccessToken(req.cookies, res);
+
+    res.send(token);
+}
+
+exports.signin = function(req, res) {
+    const authUrl = authHelper.getAuthUrl();
+
+    res.redirect(authUrl);
 }
 
 exports.signout = function(req, res) {

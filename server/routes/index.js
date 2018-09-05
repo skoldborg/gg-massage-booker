@@ -7,8 +7,6 @@ const auth = require('./auth');
 const TimeSlot = mongoose.model('TimeSlot');
 
 router.get('/timeslots', async (req, res) => {
-    authHelper.getAuthUrl();
-
     try {
         const timeSlots = await TimeSlot.find().sort({
             dateTimeISO: 'ascending'
@@ -57,6 +55,10 @@ router.delete('/timeslots/:id', async (req, res) => {
 })
 
 router.get('/authorize', auth.authorize);
+
+router.get('/gettoken', auth.gettoken);
+
+router.get('/signin', auth.signin);
 
 router.get('/signout', auth.signout);
 
