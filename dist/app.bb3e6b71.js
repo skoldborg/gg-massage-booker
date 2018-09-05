@@ -12389,9 +12389,12 @@ var TimeSlot = function (_Component) {
 
             var defaultInputValue = user !== undefined ? user.mail : '';
 
+            var additionalClasses = client !== '' ? 'time-slot--taken' : '';
+            var disabled = user === undefined && !admin ? true : false;
+
             return (0, _preact.h)(
                 'div',
-                { id: _id, 'class': "time-slot" + (client !== '' ? " time-slot--taken" : "") },
+                { id: _id, 'class': 'time-slot ' + additionalClasses },
                 (0, _preact.h)(
                     'input',
                     {
@@ -12405,7 +12408,8 @@ var TimeSlot = function (_Component) {
                         },
                         ref: function ref(input) {
                             _this2.input = input;
-                        }
+                        },
+                        disabled: disabled
                     },
                     (0, _preact.h)(
                         'div',
@@ -20227,7 +20231,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '62571' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '52265' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

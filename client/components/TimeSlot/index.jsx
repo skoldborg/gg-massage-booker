@@ -29,8 +29,11 @@ class TimeSlot extends Component {
             ? user.mail
             : ''
         
+        const additionalClasses = client !== '' ? 'time-slot--taken' : '';
+        const disabled = user === undefined && !admin ? true : false
+        
         return (
-            <div id={_id} class={"time-slot" + (client !== '' ? " time-slot--taken" : "")}>
+            <div id={_id} class={`time-slot ${additionalClasses}`}>
                 <input 
                     style={client !== '' && !admin ? 'pointer-events: none; cursor:default;' : ''}
                     class="time-slot__input" 
@@ -39,6 +42,7 @@ class TimeSlot extends Component {
                     value={client ? client : defaultInputValue}
                     onKeyDown={e => this.handleKeyDown(e, _id)}
                     ref={input => { this.input = input }}
+                    disabled={disabled}
                 >
                     <div>{client}</div>
                 </input>

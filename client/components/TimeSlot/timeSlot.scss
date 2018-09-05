@@ -7,6 +7,13 @@
     font-size: 1.2em;
 }
 
+.time-slot--locked {
+    // .time-slot__input {
+    //     cursor: default;
+    //     pointer-events: none;
+    // }
+}
+
 .time-slot--taken {
     .time-slot__input {
         opacity: 1;
