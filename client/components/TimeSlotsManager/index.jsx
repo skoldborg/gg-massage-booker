@@ -2,7 +2,8 @@ import { h, render, Component } from 'preact';
 import moment from 'moment';
 
 import { TimeSlot, AddTimeSlot } from '../../components';
-import rootPath from '../../rootPath';
+import requestService from '../../utils/requestService';
+import rootPath from '../../utils/rootPath';
 
 class TimeSlotsManager extends Component {
     constructor(props) {
@@ -18,12 +19,7 @@ class TimeSlotsManager extends Component {
     }
 
     async getTimeSlots() {
-        const response = await fetch(`${rootPath}/timeslots`, {
-            'Access-Control-Allow-Origin': '*',
-            'Accept': 'application/json'
-        })
-
-        const timeSlots = await response.json();
+        const timeSlots = await requestService.getRequest(`${rootPath}/timeslots`);
 
         this.setState({
             timeSlots: timeSlots
@@ -32,49 +28,67 @@ class TimeSlotsManager extends Component {
         this.forceUpdate();
     }
 
-    async updateTimeSlot(id, client) {
-        await fetch(`${rootPath}/timeslots/${id}`, {
-            method: 'POST',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ client: client })
-        })
+    async updateTimeSlot(id, user) {
+        const opts = { 
+            client: user ? user.displayName : '',
+            clientMail: user ? user.mail : ''
+        };
+        
+        const timeSlot = await requestService.postRequest(`${rootPath}/timeslots/${id}`, opts);
 
-        this.getTimeSlots();
+        if (timeSlot.name !== undefined) {
+            if (user !== null) {
+                await this.createCalendarEvent(this.props.accessToken, timeSlot, user);
+            }
+
+            this.getTimeSlots();
+        }
     }
 
     async addTimeSlot(name, momentDate) {
         if (name !== '' && moment.isMoment(momentDate)) {
-            await fetch(`${rootPath}/timeslots`, {
-                method: 'POST',
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: name,
-                    dateFormatted: momentDate.format('DD/MM HH:mm'),
-                    dateTimeISO: momentDate.toISOString()
-                })
-            })
+            const opts = {
+                name: name,
+                dateFormatted: momentDate.format('DD/MM HH:mm'),
+                dateTimeISO: momentDate.toISOString()
+            };
+
+            await requestService.postRequest(`${rootPath}/timeslots`, opts, false);
 
             this.getTimeSlots();
         }
     }
 
     async removeTimeSlot(id) {
-        await fetch(`${rootPath}/timeslots/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Access-Control-Allow-Origin': '*'
-            }
-        })
+        await requestService.deleteRequest(`${rootPath}/timeslots/${id}`)
 
         this.getTimeSlots();
+    }
+
+    async createCalendarEvent(token, timeSlot, user) {
+        const opts = {
+            subject: `Massage hos ${timeSlot.name}`,
+            start: {
+                dateTime: timeSlot.dateTimeISO,
+                timeZone: 'W. Europe Standard Time'
+            },
+            end: {
+                dateTime: timeSlot.dateTimeISO,
+                timeZone: 'W. Europe Standard Time'
+            },
+            attendees: [
+                {
+                    emailAddress: {
+                        address: user.mail,
+                        name: user.displayName
+                    },
+                    type: 'required'
+                }
+            ]
+        }
+        const event = await requestService.postRequest('https://graph.microsoft.com/beta/me/events', opts, true, token);
+        
+        console.log('Event created: ', event);
     }
 
     render() {
@@ -83,54 +97,44 @@ class TimeSlotsManager extends Component {
         
         this.state.timeSlots.map(timeSlot => { 
             if (timeSlot.client !== '') { 
-                bookedSlots.push(timeSlot);
+                bookedSlots.push(
+                    <TimeSlot
+                        {...timeSlot}
+                        user={this.props.user}
+                        updateTimeSlot={(id, user) => this.updateTimeSlot(id, user)}
+                        removeTimeSlot={(id) => this.removeTimeSlot(id)}
+                        admin={this.props.admin}
+                    />
+                );
             } else {
-                freeSlots.push(timeSlot);
+                freeSlots.push(
+                    <TimeSlot
+                        {...timeSlot}
+                        user={this.props.user}
+                        updateTimeSlot={(id, user) => this.updateTimeSlot(id, user)}
+                        removeTimeSlot={(id) => this.removeTimeSlot(id)}
+                        admin={this.props.admin}
+                    />
+                );
             }
-        });
+        })
 
         return (
+
             <div className="time-slots-manager">
                 <div className={`time-slots-manager__list ` + (bookedSlots.length ? '' : 'time-slots-manager__list--single')}>
-                    {bookedSlots.length ? (
-                        [<div className="time-slots-manager__list-col">
-                            {freeSlots.map(timeSlot => {
-                                return (
-                                    <TimeSlot
-                                        {...timeSlot}
-                                        updateTimeSlot={(id, client) => this.updateTimeSlot(id, client)}
-                                        removeTimeSlot={(id) => this.removeTimeSlot(id)}
-                                        admin={this.props.admin}
-                                    />
-                                )
-                            })}
-                        </div>,
+                    <div className="time-slots-manager__list-col">
+                        {freeSlots.map(timeSlot => {
+                            return timeSlot
+                        })}
+                    </div>
+                    {bookedSlots.length > 0 &&
                         <div className="time-slots-manager__list-col">
                             {bookedSlots.map(timeSlot => {
-                                return (
-                                    <TimeSlot
-                                        {...timeSlot}
-                                        updateTimeSlot={(id, client) => this.updateTimeSlot(id, client)}
-                                        removeTimeSlot={(id) => this.removeTimeSlot(id)}
-                                        admin={this.props.admin}
-                                    />
-                                )
-                            })}
-                        </div>]
-                    ) : (
-                        <div className="time-slots-manager__list-col">
-                            {freeSlots.map(timeSlot => {
-                                return (
-                                    <TimeSlot
-                                        {...timeSlot}
-                                        updateTimeSlot={(id, client) => this.updateTimeSlot(id, client)}
-                                        removeTimeSlot={(id) => this.removeTimeSlot(id)}
-                                        admin={this.props.admin}
-                                    />
-                                )
+                                return timeSlot
                             })}
                         </div>
-                    )}
+                    }
                 </div>
 
                 {this.props.admin &&

@@ -19,7 +19,7 @@ exports.authorize = async function(req, res) {
 exports.gettoken = async function(req, res) {
     const token = await authHelper.getAccessToken(req.cookies, res);
 
-    res.send(token);
+    res.json({ token: token });
 }
 
 exports.signin = function(req, res) {

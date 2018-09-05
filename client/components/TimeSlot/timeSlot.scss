@@ -9,6 +9,8 @@
 
 .time-slot--taken {
     .time-slot__input {
+        opacity: 1;
+
         & + .time-slot__label:before {
             cursor: default;
             pointer-events: none;
@@ -36,8 +38,11 @@
     letter-spacing: 1px;
     background: transparent;
     outline: none;
+    opacity: 0;
 
     &:focus {
+        opacity: 1;
+
         & + .time-slot__label:before {
             border-width: 8px;
             border-color: #189F97;

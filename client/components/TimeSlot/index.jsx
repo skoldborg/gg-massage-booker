@@ -7,21 +7,28 @@ class TimeSlot extends Component {
         super(props);
     }
 
-    handleChange(e, id) {
-        e.preventDefault();
+    handleKeyDown(e, id) {
+        const target = e.target;
+        const user = this.props.user ? this.props.user : null;
 
-        const client = e.target.value;
+        if (e.which === 13) {
+            if (user) {
+                if (target.value === user.mail && target.parentNode.getAttribute(id) === id) {
+                    target.parentNode.classList.add('time-slot--taken');
+                }
+                e.target.blur();
 
-        if (client !== '' && e.target.parentNode.getAttribute(id) === id) {
-            e.target.parentNode.classList.add('time-slot--taken');
+            }
+
+            this.props.updateTimeSlot(id, user);
         }
-        e.target.blur();
-        
-
-        this.props.updateTimeSlot(id, client)
     }
 
-    render({ _id, name, dateFormatted, client, admin }) {
+    render({ _id, name, dateFormatted, client, admin, user }) {
+        let defaultInputValue = user !== undefined
+            ? user.mail
+            : ''
+        
         return (
             <div id={_id} class={"time-slot" + (client !== '' ? " time-slot--taken" : "")}>
                 <input 
@@ -29,8 +36,8 @@ class TimeSlot extends Component {
                     class="time-slot__input" 
                     type="text" 
                     id={`input-${dateFormatted}-${name}`}
-                    value={client}
-                    onChange={e => this.handleChange(e, _id)}
+                    value={client ? client : defaultInputValue}
+                    onKeyDown={e => this.handleKeyDown(e, _id)}
                     ref={input => { this.input = input }}
                 >
                     <div>{client}</div>

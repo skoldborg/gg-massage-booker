@@ -19,6 +19,9 @@ const TimeSlotSchema = new mongoose.Schema({
         trim: true,
         default: ''
     },
+    clientMail: {
+        type: String
+    },
     added: {
         type: Date,
         default: Date.now()

@@ -12359,18 +12359,21 @@ var TimeSlot = function (_Component) {
     }
 
     _createClass(TimeSlot, [{
-        key: 'handleChange',
-        value: function handleChange(e, id) {
-            e.preventDefault();
+        key: 'handleKeyDown',
+        value: function handleKeyDown(e, id) {
+            var target = e.target;
+            var user = this.props.user ? this.props.user : null;
 
-            var client = e.target.value;
+            if (e.which === 13) {
+                if (user) {
+                    if (target.value === user.mail && target.parentNode.getAttribute(id) === id) {
+                        target.parentNode.classList.add('time-slot--taken');
+                    }
+                    e.target.blur();
+                }
 
-            if (client !== '' && e.target.parentNode.getAttribute(id) === id) {
-                e.target.parentNode.classList.add('time-slot--taken');
+                this.props.updateTimeSlot(id, user);
             }
-            e.target.blur();
-
-            this.props.updateTimeSlot(id, client);
         }
     }, {
         key: 'render',
@@ -12381,7 +12384,10 @@ var TimeSlot = function (_Component) {
                 name = _ref.name,
                 dateFormatted = _ref.dateFormatted,
                 client = _ref.client,
-                admin = _ref.admin;
+                admin = _ref.admin,
+                user = _ref.user;
+
+            var defaultInputValue = user !== undefined ? user.mail : '';
 
             return (0, _preact.h)(
                 'div',
@@ -12393,9 +12399,9 @@ var TimeSlot = function (_Component) {
                         'class': 'time-slot__input',
                         type: 'text',
                         id: 'input-' + dateFormatted + '-' + name,
-                        value: client,
-                        onChange: function onChange(e) {
-                            return _this2.handleChange(e, _id);
+                        value: client ? client : defaultInputValue,
+                        onKeyDown: function onKeyDown(e) {
+                            return _this2.handleKeyDown(e, _id);
                         },
                         ref: function ref(input) {
                             _this2.input = input;
@@ -16943,7 +16949,249 @@ var global = arguments[3];
 
 })));
 
-},{}],"rootPath.js":[function(require,module,exports) {
+},{}],"utils/requestService.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var RequestService = function () {
+    function RequestService() {
+        _classCallCheck(this, RequestService);
+    }
+
+    _createClass(RequestService, [{
+        key: 'getRequest',
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(endpoint, token) {
+                var headers, response;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                headers = token ? {
+                                    'Accept': 'application/json',
+                                    'Authorization': 'Bearer ' + token
+                                } : {
+                                    'Accept': 'application/json'
+                                };
+                                _context.prev = 1;
+                                _context.next = 4;
+                                return fetch(endpoint, {
+                                    headers: headers
+                                });
+
+                            case 4:
+                                response = _context.sent;
+
+                                if (!response.ok) {
+                                    _context.next = 11;
+                                    break;
+                                }
+
+                                _context.next = 8;
+                                return response.json();
+
+                            case 8:
+                                return _context.abrupt('return', _context.sent);
+
+                            case 11:
+                                return _context.abrupt('return', response);
+
+                            case 12:
+                                _context.next = 17;
+                                break;
+
+                            case 14:
+                                _context.prev = 14;
+                                _context.t0 = _context['catch'](1);
+                                throw _context.t0;
+
+                            case 17:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this, [[1, 14]]);
+            }));
+
+            function getRequest(_x, _x2) {
+                return _ref.apply(this, arguments);
+            }
+
+            return getRequest;
+        }()
+    }, {
+        key: 'postRequest',
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(endpoint, opts) {
+                var parseResponse = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+                var token = arguments[3];
+                var headers, response;
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                headers = token ? {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': 'Bearer ' + token
+                                } : {
+                                    'Content-Type': 'application/json'
+                                };
+                                _context2.prev = 1;
+                                _context2.next = 4;
+                                return fetch(endpoint, {
+                                    method: 'POST',
+                                    headers: headers,
+                                    body: JSON.stringify(opts)
+                                });
+
+                            case 4:
+                                response = _context2.sent;
+
+                                if (!parseResponse) {
+                                    _context2.next = 11;
+                                    break;
+                                }
+
+                                _context2.next = 8;
+                                return response.json();
+
+                            case 8:
+                                return _context2.abrupt('return', _context2.sent);
+
+                            case 11:
+                                return _context2.abrupt('return', response);
+
+                            case 12:
+                                _context2.next = 17;
+                                break;
+
+                            case 14:
+                                _context2.prev = 14;
+                                _context2.t0 = _context2['catch'](1);
+                                throw _context2.t0;
+
+                            case 17:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this, [[1, 14]]);
+            }));
+
+            function postRequest(_x4, _x5) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return postRequest;
+        }()
+    }, {
+        key: 'deleteRequest',
+        value: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(endpoint, token) {
+                var headers, response;
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                headers = token ? {
+                                    Authorization: 'Bearer ' + token
+                                } : {};
+                                _context3.prev = 1;
+                                _context3.next = 4;
+                                return fetch(endpoint, {
+                                    method: 'DELETE',
+                                    headers: headers
+                                });
+
+                            case 4:
+                                response = _context3.sent;
+                                _context3.next = 7;
+                                return response.text();
+
+                            case 7:
+                                return _context3.abrupt('return', _context3.sent);
+
+                            case 10:
+                                _context3.prev = 10;
+                                _context3.t0 = _context3['catch'](1);
+                                throw _context3.t0;
+
+                            case 13:
+                            case 'end':
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this, [[1, 10]]);
+            }));
+
+            function deleteRequest(_x6, _x7) {
+                return _ref3.apply(this, arguments);
+            }
+
+            return deleteRequest;
+        }()
+    }, {
+        key: 'putRequest',
+        value: function () {
+            var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(endpoint, token) {
+                var headers, response;
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                    while (1) {
+                        switch (_context4.prev = _context4.next) {
+                            case 0:
+                                headers = token ? {
+                                    Authorization: 'Bearer ' + token
+                                } : {};
+                                _context4.prev = 1;
+                                _context4.next = 4;
+                                return fetch(endpoint, {
+                                    method: 'PUT',
+                                    headers: headers
+                                });
+
+                            case 4:
+                                response = _context4.sent;
+                                _context4.next = 7;
+                                return response.json();
+
+                            case 7:
+                                return _context4.abrupt('return', _context4.sent);
+
+                            case 10:
+                                _context4.prev = 10;
+                                _context4.t0 = _context4['catch'](1);
+                                throw _context4.t0;
+
+                            case 13:
+                            case 'end':
+                                return _context4.stop();
+                        }
+                    }
+                }, _callee4, this, [[1, 10]]);
+            }));
+
+            function putRequest(_x8, _x9) {
+                return _ref4.apply(this, arguments);
+            }
+
+            return putRequest;
+        }()
+    }]);
+
+    return RequestService;
+}();
+
+exports.default = new RequestService();
+},{}],"utils/rootPath.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -16972,7 +17220,11 @@ var _moment2 = _interopRequireDefault(_moment);
 
 var _components = require('../../components');
 
-var _rootPath = require('../../rootPath');
+var _requestService = require('../../utils/requestService');
+
+var _requestService2 = _interopRequireDefault(_requestService);
+
+var _rootPath = require('../../utils/rootPath');
 
 var _rootPath2 = _interopRequireDefault(_rootPath);
 
@@ -17009,23 +17261,15 @@ var TimeSlotsManager = function (_Component) {
         key: 'getTimeSlots',
         value: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-                var response, timeSlots;
+                var timeSlots;
                 return regeneratorRuntime.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 _context.next = 2;
-                                return fetch(_rootPath2.default + '/timeslots', {
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Accept': 'application/json'
-                                });
+                                return _requestService2.default.getRequest(_rootPath2.default + '/timeslots');
 
                             case 2:
-                                response = _context.sent;
-                                _context.next = 5;
-                                return response.json();
-
-                            case 5:
                                 timeSlots = _context.sent;
 
 
@@ -17035,7 +17279,7 @@ var TimeSlotsManager = function (_Component) {
 
                                 this.forceUpdate();
 
-                            case 8:
+                            case 5:
                             case 'end':
                                 return _context.stop();
                         }
@@ -17052,27 +17296,40 @@ var TimeSlotsManager = function (_Component) {
     }, {
         key: 'updateTimeSlot',
         value: function () {
-            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(id, client) {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(id, user) {
+                var opts, timeSlot;
                 return regeneratorRuntime.wrap(function _callee2$(_context2) {
                     while (1) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
-                                _context2.next = 2;
-                                return fetch(_rootPath2.default + '/timeslots/' + id, {
-                                    method: 'POST',
-                                    headers: {
-                                        'Access-Control-Allow-Origin': '*',
-                                        'Accept': 'application/json',
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({ client: client })
-                                });
+                                opts = {
+                                    client: user ? user.displayName : '',
+                                    clientMail: user ? user.mail : ''
+                                };
+                                _context2.next = 3;
+                                return _requestService2.default.postRequest(_rootPath2.default + '/timeslots/' + id, opts);
 
-                            case 2:
+                            case 3:
+                                timeSlot = _context2.sent;
+
+                                if (!(timeSlot.name !== undefined)) {
+                                    _context2.next = 9;
+                                    break;
+                                }
+
+                                if (!(user !== null)) {
+                                    _context2.next = 8;
+                                    break;
+                                }
+
+                                _context2.next = 8;
+                                return this.createCalendarEvent(this.props.accessToken, timeSlot, user);
+
+                            case 8:
 
                                 this.getTimeSlots();
 
-                            case 3:
+                            case 9:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -17090,35 +17347,29 @@ var TimeSlotsManager = function (_Component) {
         key: 'addTimeSlot',
         value: function () {
             var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(name, momentDate) {
+                var opts;
                 return regeneratorRuntime.wrap(function _callee3$(_context3) {
                     while (1) {
                         switch (_context3.prev = _context3.next) {
                             case 0:
                                 if (!(name !== '' && _moment2.default.isMoment(momentDate))) {
-                                    _context3.next = 4;
+                                    _context3.next = 5;
                                     break;
                                 }
 
-                                _context3.next = 3;
-                                return fetch(_rootPath2.default + '/timeslots', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Access-Control-Allow-Origin': '*',
-                                        'Accept': 'application/json',
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        name: name,
-                                        dateFormatted: momentDate.format('DD/MM HH:mm'),
-                                        dateTimeISO: momentDate.toISOString()
-                                    })
-                                });
+                                opts = {
+                                    name: name,
+                                    dateFormatted: momentDate.format('DD/MM HH:mm'),
+                                    dateTimeISO: momentDate.toISOString()
+                                };
+                                _context3.next = 4;
+                                return _requestService2.default.postRequest(_rootPath2.default + '/timeslots', opts, false);
 
-                            case 3:
+                            case 4:
 
                                 this.getTimeSlots();
 
-                            case 4:
+                            case 5:
                             case 'end':
                                 return _context3.stop();
                         }
@@ -17141,12 +17392,7 @@ var TimeSlotsManager = function (_Component) {
                         switch (_context4.prev = _context4.next) {
                             case 0:
                                 _context4.next = 2;
-                                return fetch(_rootPath2.default + '/timeslots/' + id, {
-                                    method: 'DELETE',
-                                    headers: {
-                                        'Access-Control-Allow-Origin': '*'
-                                    }
-                                });
+                                return _requestService2.default.deleteRequest(_rootPath2.default + '/timeslots/' + id);
 
                             case 2:
 
@@ -17167,6 +17413,56 @@ var TimeSlotsManager = function (_Component) {
             return removeTimeSlot;
         }()
     }, {
+        key: 'createCalendarEvent',
+        value: function () {
+            var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(token, timeSlot, user) {
+                var opts, event;
+                return regeneratorRuntime.wrap(function _callee5$(_context5) {
+                    while (1) {
+                        switch (_context5.prev = _context5.next) {
+                            case 0:
+                                opts = {
+                                    subject: 'Massage hos ' + timeSlot.name,
+                                    start: {
+                                        dateTime: timeSlot.dateTimeISO,
+                                        timeZone: 'W. Europe Standard Time'
+                                    },
+                                    end: {
+                                        dateTime: timeSlot.dateTimeISO,
+                                        timeZone: 'W. Europe Standard Time'
+                                    },
+                                    attendees: [{
+                                        emailAddress: {
+                                            address: user.mail,
+                                            name: user.displayName
+                                        },
+                                        type: 'required'
+                                    }]
+                                };
+                                _context5.next = 3;
+                                return _requestService2.default.postRequest('https://graph.microsoft.com/beta/me/events', opts, true, token);
+
+                            case 3:
+                                event = _context5.sent;
+
+
+                                console.log('Event created: ', event);
+
+                            case 5:
+                            case 'end':
+                                return _context5.stop();
+                        }
+                    }
+                }, _callee5, this);
+            }));
+
+            function createCalendarEvent(_x6, _x7, _x8) {
+                return _ref5.apply(this, arguments);
+            }
+
+            return createCalendarEvent;
+        }()
+    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
@@ -17176,9 +17472,27 @@ var TimeSlotsManager = function (_Component) {
 
             this.state.timeSlots.map(function (timeSlot) {
                 if (timeSlot.client !== '') {
-                    bookedSlots.push(timeSlot);
+                    bookedSlots.push((0, _preact.h)(_components.TimeSlot, _extends({}, timeSlot, {
+                        user: _this2.props.user,
+                        updateTimeSlot: function updateTimeSlot(id, user) {
+                            return _this2.updateTimeSlot(id, user);
+                        },
+                        removeTimeSlot: function removeTimeSlot(id) {
+                            return _this2.removeTimeSlot(id);
+                        },
+                        admin: _this2.props.admin
+                    })));
                 } else {
-                    freeSlots.push(timeSlot);
+                    freeSlots.push((0, _preact.h)(_components.TimeSlot, _extends({}, timeSlot, {
+                        user: _this2.props.user,
+                        updateTimeSlot: function updateTimeSlot(id, user) {
+                            return _this2.updateTimeSlot(id, user);
+                        },
+                        removeTimeSlot: function removeTimeSlot(id) {
+                            return _this2.removeTimeSlot(id);
+                        },
+                        admin: _this2.props.admin
+                    })));
                 }
             });
 
@@ -17188,47 +17502,18 @@ var TimeSlotsManager = function (_Component) {
                 (0, _preact.h)(
                     'div',
                     { className: 'time-slots-manager__list ' + (bookedSlots.length ? '' : 'time-slots-manager__list--single') },
-                    bookedSlots.length ? [(0, _preact.h)(
+                    (0, _preact.h)(
                         'div',
                         { className: 'time-slots-manager__list-col' },
                         freeSlots.map(function (timeSlot) {
-                            return (0, _preact.h)(_components.TimeSlot, _extends({}, timeSlot, {
-                                updateTimeSlot: function updateTimeSlot(id, client) {
-                                    return _this2.updateTimeSlot(id, client);
-                                },
-                                removeTimeSlot: function removeTimeSlot(id) {
-                                    return _this2.removeTimeSlot(id);
-                                },
-                                admin: _this2.props.admin
-                            }));
+                            return timeSlot;
                         })
-                    ), (0, _preact.h)(
+                    ),
+                    bookedSlots.length > 0 && (0, _preact.h)(
                         'div',
                         { className: 'time-slots-manager__list-col' },
                         bookedSlots.map(function (timeSlot) {
-                            return (0, _preact.h)(_components.TimeSlot, _extends({}, timeSlot, {
-                                updateTimeSlot: function updateTimeSlot(id, client) {
-                                    return _this2.updateTimeSlot(id, client);
-                                },
-                                removeTimeSlot: function removeTimeSlot(id) {
-                                    return _this2.removeTimeSlot(id);
-                                },
-                                admin: _this2.props.admin
-                            }));
-                        })
-                    )] : (0, _preact.h)(
-                        'div',
-                        { className: 'time-slots-manager__list-col' },
-                        freeSlots.map(function (timeSlot) {
-                            return (0, _preact.h)(_components.TimeSlot, _extends({}, timeSlot, {
-                                updateTimeSlot: function updateTimeSlot(id, client) {
-                                    return _this2.updateTimeSlot(id, client);
-                                },
-                                removeTimeSlot: function removeTimeSlot(id) {
-                                    return _this2.removeTimeSlot(id);
-                                },
-                                admin: _this2.props.admin
-                            }));
+                            return timeSlot;
                         })
                     )
                 ),
@@ -17252,7 +17537,7 @@ var TimeSlotsManager = function (_Component) {
 }(_preact.Component);
 
 exports.default = TimeSlotsManager;
-},{"preact":"../node_modules/preact/dist/preact.mjs","moment":"../node_modules/moment/moment.js","../../components":"components/index.js","../../rootPath":"rootPath.js"}],"../node_modules/react-datetime/node_modules/object-assign/index.js":[function(require,module,exports) {
+},{"preact":"../node_modules/preact/dist/preact.mjs","moment":"../node_modules/moment/moment.js","../../components":"components/index.js","../../utils/requestService":"utils/requestService.js","../../utils/rootPath":"utils/rootPath.js"}],"../node_modules/react-datetime/node_modules/object-assign/index.js":[function(require,module,exports) {
 'use strict';
 
 var propIsEnumerable = Object.prototype.propertyIsEnumerable;
@@ -19262,7 +19547,11 @@ var _preact = require('preact');
 
 var _components = require('../../components');
 
-var _rootPath = require('../../rootPath');
+var _requestService = require('../../utils/requestService');
+
+var _requestService2 = _interopRequireDefault(_requestService);
+
+var _rootPath = require('../../utils/rootPath');
 
 var _rootPath2 = _interopRequireDefault(_rootPath);
 
@@ -19285,7 +19574,8 @@ var Main = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this));
 
         _this.state = {
-            accessToken: null
+            accessToken: null,
+            showSignInButton: false
         };
         return _this;
     }
@@ -19299,32 +19589,42 @@ var Main = function (_Component) {
         key: 'checkForAccessToken',
         value: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-                var response, token;
+                var _ref2, token, user;
+
                 return regeneratorRuntime.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 _context.next = 2;
-                                return fetch(_rootPath2.default + '/gettoken', {
-                                    'Access-Control-Allow-Origin': '*'
-                                });
+                                return _requestService2.default.getRequest(_rootPath2.default + '/gettoken');
 
                             case 2:
-                                response = _context.sent;
-                                _context.next = 5;
-                                return response.text();
+                                _ref2 = _context.sent;
+                                token = _ref2.token;
 
-                            case 5:
-                                token = _context.sent;
-
-
-                                if (token !== '') {
-                                    this.setState({
-                                        accessToken: token
-                                    });
+                                if (!(token !== '' && token !== null)) {
+                                    _context.next = 11;
+                                    break;
                                 }
 
+                                _context.next = 7;
+                                return _requestService2.default.getRequest('https://graph.microsoft.com/beta/me', token);
+
                             case 7:
+                                user = _context.sent;
+
+
+                                this.setState({
+                                    accessToken: token,
+                                    user: user
+                                });
+                                _context.next = 12;
+                                break;
+
+                            case 11:
+                                this.setState({ showSignInButton: true });
+
+                            case 12:
                             case 'end':
                                 return _context.stop();
                         }
@@ -19344,7 +19644,7 @@ var Main = function (_Component) {
             return (0, _preact.h)(
                 'div',
                 { 'class': 'main' },
-                this.state.accessToken === null && (0, _preact.h)(
+                this.state.showSignInButton && (0, _preact.h)(
                     'a',
                     { href: '/signin', 'class': 'button button--signin' },
                     'Logga in f\xF6r att boka en tid'
@@ -19354,7 +19654,11 @@ var Main = function (_Component) {
                     { 'class': 'main__subtitle' },
                     'Tider'
                 ),
-                (0, _preact.h)(_components.TimeSlotsManager, { admin: false, token: this.state.token })
+                (0, _preact.h)(_components.TimeSlotsManager, {
+                    admin: false,
+                    accessToken: this.state.accessToken,
+                    user: this.state.user
+                })
             );
         }
     }]);
@@ -19363,7 +19667,7 @@ var Main = function (_Component) {
 }(_preact.Component);
 
 exports.default = Main;
-},{"core-js/modules/es6.typed.array-buffer":"../node_modules/core-js/modules/es6.typed.array-buffer.js","core-js/modules/es6.typed.int8-array":"../node_modules/core-js/modules/es6.typed.int8-array.js","core-js/modules/es6.typed.uint8-array":"../node_modules/core-js/modules/es6.typed.uint8-array.js","core-js/modules/es6.typed.uint8-clamped-array":"../node_modules/core-js/modules/es6.typed.uint8-clamped-array.js","core-js/modules/es6.typed.int16-array":"../node_modules/core-js/modules/es6.typed.int16-array.js","core-js/modules/es6.typed.uint16-array":"../node_modules/core-js/modules/es6.typed.uint16-array.js","core-js/modules/es6.typed.int32-array":"../node_modules/core-js/modules/es6.typed.int32-array.js","core-js/modules/es6.typed.uint32-array":"../node_modules/core-js/modules/es6.typed.uint32-array.js","core-js/modules/es6.typed.float32-array":"../node_modules/core-js/modules/es6.typed.float32-array.js","core-js/modules/es6.typed.float64-array":"../node_modules/core-js/modules/es6.typed.float64-array.js","core-js/modules/es6.map":"../node_modules/core-js/modules/es6.map.js","core-js/modules/es6.set":"../node_modules/core-js/modules/es6.set.js","core-js/modules/es6.weak-map":"../node_modules/core-js/modules/es6.weak-map.js","core-js/modules/es6.weak-set":"../node_modules/core-js/modules/es6.weak-set.js","core-js/modules/es6.reflect.apply":"../node_modules/core-js/modules/es6.reflect.apply.js","core-js/modules/es6.reflect.construct":"../node_modules/core-js/modules/es6.reflect.construct.js","core-js/modules/es6.reflect.define-property":"../node_modules/core-js/modules/es6.reflect.define-property.js","core-js/modules/es6.reflect.delete-property":"../node_modules/core-js/modules/es6.reflect.delete-property.js","core-js/modules/es6.reflect.get":"../node_modules/core-js/modules/es6.reflect.get.js","core-js/modules/es6.reflect.get-own-property-descriptor":"../node_modules/core-js/modules/es6.reflect.get-own-property-descriptor.js","core-js/modules/es6.reflect.get-prototype-of":"../node_modules/core-js/modules/es6.reflect.get-prototype-of.js","core-js/modules/es6.reflect.has":"../node_modules/core-js/modules/es6.reflect.has.js","core-js/modules/es6.reflect.is-extensible":"../node_modules/core-js/modules/es6.reflect.is-extensible.js","core-js/modules/es6.reflect.own-keys":"../node_modules/core-js/modules/es6.reflect.own-keys.js","core-js/modules/es6.reflect.prevent-extensions":"../node_modules/core-js/modules/es6.reflect.prevent-extensions.js","core-js/modules/es6.reflect.set":"../node_modules/core-js/modules/es6.reflect.set.js","core-js/modules/es6.reflect.set-prototype-of":"../node_modules/core-js/modules/es6.reflect.set-prototype-of.js","core-js/modules/es6.promise":"../node_modules/core-js/modules/es6.promise.js","core-js/modules/es6.symbol":"../node_modules/core-js/modules/es6.symbol.js","core-js/modules/es6.object.freeze":"../node_modules/core-js/modules/es6.object.freeze.js","core-js/modules/es6.object.seal":"../node_modules/core-js/modules/es6.object.seal.js","core-js/modules/es6.object.prevent-extensions":"../node_modules/core-js/modules/es6.object.prevent-extensions.js","core-js/modules/es6.object.is-frozen":"../node_modules/core-js/modules/es6.object.is-frozen.js","core-js/modules/es6.object.is-sealed":"../node_modules/core-js/modules/es6.object.is-sealed.js","core-js/modules/es6.object.is-extensible":"../node_modules/core-js/modules/es6.object.is-extensible.js","core-js/modules/es6.object.get-own-property-descriptor":"../node_modules/core-js/modules/es6.object.get-own-property-descriptor.js","core-js/modules/es6.object.get-prototype-of":"../node_modules/core-js/modules/es6.object.get-prototype-of.js","core-js/modules/es6.object.keys":"../node_modules/core-js/modules/es6.object.keys.js","core-js/modules/es6.object.get-own-property-names":"../node_modules/core-js/modules/es6.object.get-own-property-names.js","core-js/modules/es6.object.assign":"../node_modules/core-js/modules/es6.object.assign.js","core-js/modules/es6.object.is":"../node_modules/core-js/modules/es6.object.is.js","core-js/modules/es6.object.set-prototype-of":"../node_modules/core-js/modules/es6.object.set-prototype-of.js","core-js/modules/es6.function.name":"../node_modules/core-js/modules/es6.function.name.js","core-js/modules/es6.string.raw":"../node_modules/core-js/modules/es6.string.raw.js","core-js/modules/es6.string.from-code-point":"../node_modules/core-js/modules/es6.string.from-code-point.js","core-js/modules/es6.string.code-point-at":"../node_modules/core-js/modules/es6.string.code-point-at.js","core-js/modules/es6.string.repeat":"../node_modules/core-js/modules/es6.string.repeat.js","core-js/modules/es6.string.starts-with":"../node_modules/core-js/modules/es6.string.starts-with.js","core-js/modules/es6.string.ends-with":"../node_modules/core-js/modules/es6.string.ends-with.js","core-js/modules/es6.string.includes":"../node_modules/core-js/modules/es6.string.includes.js","core-js/modules/es6.regexp.flags":"../node_modules/core-js/modules/es6.regexp.flags.js","core-js/modules/es6.regexp.match":"../node_modules/core-js/modules/es6.regexp.match.js","core-js/modules/es6.regexp.replace":"../node_modules/core-js/modules/es6.regexp.replace.js","core-js/modules/es6.regexp.split":"../node_modules/core-js/modules/es6.regexp.split.js","core-js/modules/es6.regexp.search":"../node_modules/core-js/modules/es6.regexp.search.js","core-js/modules/es6.array.from":"../node_modules/core-js/modules/es6.array.from.js","core-js/modules/es6.array.of":"../node_modules/core-js/modules/es6.array.of.js","core-js/modules/es6.array.copy-within":"../node_modules/core-js/modules/es6.array.copy-within.js","core-js/modules/es6.array.find":"../node_modules/core-js/modules/es6.array.find.js","core-js/modules/es6.array.find-index":"../node_modules/core-js/modules/es6.array.find-index.js","core-js/modules/es6.array.fill":"../node_modules/core-js/modules/es6.array.fill.js","core-js/modules/es6.array.iterator":"../node_modules/core-js/modules/es6.array.iterator.js","core-js/modules/es6.number.is-finite":"../node_modules/core-js/modules/es6.number.is-finite.js","core-js/modules/es6.number.is-integer":"../node_modules/core-js/modules/es6.number.is-integer.js","core-js/modules/es6.number.is-safe-integer":"../node_modules/core-js/modules/es6.number.is-safe-integer.js","core-js/modules/es6.number.is-nan":"../node_modules/core-js/modules/es6.number.is-nan.js","core-js/modules/es6.number.epsilon":"../node_modules/core-js/modules/es6.number.epsilon.js","core-js/modules/es6.number.min-safe-integer":"../node_modules/core-js/modules/es6.number.min-safe-integer.js","core-js/modules/es6.number.max-safe-integer":"../node_modules/core-js/modules/es6.number.max-safe-integer.js","core-js/modules/es6.math.acosh":"../node_modules/core-js/modules/es6.math.acosh.js","core-js/modules/es6.math.asinh":"../node_modules/core-js/modules/es6.math.asinh.js","core-js/modules/es6.math.atanh":"../node_modules/core-js/modules/es6.math.atanh.js","core-js/modules/es6.math.cbrt":"../node_modules/core-js/modules/es6.math.cbrt.js","core-js/modules/es6.math.clz32":"../node_modules/core-js/modules/es6.math.clz32.js","core-js/modules/es6.math.cosh":"../node_modules/core-js/modules/es6.math.cosh.js","core-js/modules/es6.math.expm1":"../node_modules/core-js/modules/es6.math.expm1.js","core-js/modules/es6.math.fround":"../node_modules/core-js/modules/es6.math.fround.js","core-js/modules/es6.math.hypot":"../node_modules/core-js/modules/es6.math.hypot.js","core-js/modules/es6.math.imul":"../node_modules/core-js/modules/es6.math.imul.js","core-js/modules/es6.math.log1p":"../node_modules/core-js/modules/es6.math.log1p.js","core-js/modules/es6.math.log10":"../node_modules/core-js/modules/es6.math.log10.js","core-js/modules/es6.math.log2":"../node_modules/core-js/modules/es6.math.log2.js","core-js/modules/es6.math.sign":"../node_modules/core-js/modules/es6.math.sign.js","core-js/modules/es6.math.sinh":"../node_modules/core-js/modules/es6.math.sinh.js","core-js/modules/es6.math.tanh":"../node_modules/core-js/modules/es6.math.tanh.js","core-js/modules/es6.math.trunc":"../node_modules/core-js/modules/es6.math.trunc.js","core-js/modules/es7.array.includes":"../node_modules/core-js/modules/es7.array.includes.js","core-js/modules/es7.object.values":"../node_modules/core-js/modules/es7.object.values.js","core-js/modules/es7.object.entries":"../node_modules/core-js/modules/es7.object.entries.js","core-js/modules/es7.object.get-own-property-descriptors":"../node_modules/core-js/modules/es7.object.get-own-property-descriptors.js","core-js/modules/es7.string.pad-start":"../node_modules/core-js/modules/es7.string.pad-start.js","core-js/modules/es7.string.pad-end":"../node_modules/core-js/modules/es7.string.pad-end.js","core-js/modules/web.timers":"../node_modules/core-js/modules/web.timers.js","core-js/modules/web.immediate":"../node_modules/core-js/modules/web.immediate.js","core-js/modules/web.dom.iterable":"../node_modules/core-js/modules/web.dom.iterable.js","regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","whatwg-fetch":"../node_modules/whatwg-fetch/fetch.js","preact":"../node_modules/preact/dist/preact.mjs","../../components":"components/index.js","../../rootPath":"rootPath.js"}],"pages/Admin/index.jsx":[function(require,module,exports) {
+},{"core-js/modules/es6.typed.array-buffer":"../node_modules/core-js/modules/es6.typed.array-buffer.js","core-js/modules/es6.typed.int8-array":"../node_modules/core-js/modules/es6.typed.int8-array.js","core-js/modules/es6.typed.uint8-array":"../node_modules/core-js/modules/es6.typed.uint8-array.js","core-js/modules/es6.typed.uint8-clamped-array":"../node_modules/core-js/modules/es6.typed.uint8-clamped-array.js","core-js/modules/es6.typed.int16-array":"../node_modules/core-js/modules/es6.typed.int16-array.js","core-js/modules/es6.typed.uint16-array":"../node_modules/core-js/modules/es6.typed.uint16-array.js","core-js/modules/es6.typed.int32-array":"../node_modules/core-js/modules/es6.typed.int32-array.js","core-js/modules/es6.typed.uint32-array":"../node_modules/core-js/modules/es6.typed.uint32-array.js","core-js/modules/es6.typed.float32-array":"../node_modules/core-js/modules/es6.typed.float32-array.js","core-js/modules/es6.typed.float64-array":"../node_modules/core-js/modules/es6.typed.float64-array.js","core-js/modules/es6.map":"../node_modules/core-js/modules/es6.map.js","core-js/modules/es6.set":"../node_modules/core-js/modules/es6.set.js","core-js/modules/es6.weak-map":"../node_modules/core-js/modules/es6.weak-map.js","core-js/modules/es6.weak-set":"../node_modules/core-js/modules/es6.weak-set.js","core-js/modules/es6.reflect.apply":"../node_modules/core-js/modules/es6.reflect.apply.js","core-js/modules/es6.reflect.construct":"../node_modules/core-js/modules/es6.reflect.construct.js","core-js/modules/es6.reflect.define-property":"../node_modules/core-js/modules/es6.reflect.define-property.js","core-js/modules/es6.reflect.delete-property":"../node_modules/core-js/modules/es6.reflect.delete-property.js","core-js/modules/es6.reflect.get":"../node_modules/core-js/modules/es6.reflect.get.js","core-js/modules/es6.reflect.get-own-property-descriptor":"../node_modules/core-js/modules/es6.reflect.get-own-property-descriptor.js","core-js/modules/es6.reflect.get-prototype-of":"../node_modules/core-js/modules/es6.reflect.get-prototype-of.js","core-js/modules/es6.reflect.has":"../node_modules/core-js/modules/es6.reflect.has.js","core-js/modules/es6.reflect.is-extensible":"../node_modules/core-js/modules/es6.reflect.is-extensible.js","core-js/modules/es6.reflect.own-keys":"../node_modules/core-js/modules/es6.reflect.own-keys.js","core-js/modules/es6.reflect.prevent-extensions":"../node_modules/core-js/modules/es6.reflect.prevent-extensions.js","core-js/modules/es6.reflect.set":"../node_modules/core-js/modules/es6.reflect.set.js","core-js/modules/es6.reflect.set-prototype-of":"../node_modules/core-js/modules/es6.reflect.set-prototype-of.js","core-js/modules/es6.promise":"../node_modules/core-js/modules/es6.promise.js","core-js/modules/es6.symbol":"../node_modules/core-js/modules/es6.symbol.js","core-js/modules/es6.object.freeze":"../node_modules/core-js/modules/es6.object.freeze.js","core-js/modules/es6.object.seal":"../node_modules/core-js/modules/es6.object.seal.js","core-js/modules/es6.object.prevent-extensions":"../node_modules/core-js/modules/es6.object.prevent-extensions.js","core-js/modules/es6.object.is-frozen":"../node_modules/core-js/modules/es6.object.is-frozen.js","core-js/modules/es6.object.is-sealed":"../node_modules/core-js/modules/es6.object.is-sealed.js","core-js/modules/es6.object.is-extensible":"../node_modules/core-js/modules/es6.object.is-extensible.js","core-js/modules/es6.object.get-own-property-descriptor":"../node_modules/core-js/modules/es6.object.get-own-property-descriptor.js","core-js/modules/es6.object.get-prototype-of":"../node_modules/core-js/modules/es6.object.get-prototype-of.js","core-js/modules/es6.object.keys":"../node_modules/core-js/modules/es6.object.keys.js","core-js/modules/es6.object.get-own-property-names":"../node_modules/core-js/modules/es6.object.get-own-property-names.js","core-js/modules/es6.object.assign":"../node_modules/core-js/modules/es6.object.assign.js","core-js/modules/es6.object.is":"../node_modules/core-js/modules/es6.object.is.js","core-js/modules/es6.object.set-prototype-of":"../node_modules/core-js/modules/es6.object.set-prototype-of.js","core-js/modules/es6.function.name":"../node_modules/core-js/modules/es6.function.name.js","core-js/modules/es6.string.raw":"../node_modules/core-js/modules/es6.string.raw.js","core-js/modules/es6.string.from-code-point":"../node_modules/core-js/modules/es6.string.from-code-point.js","core-js/modules/es6.string.code-point-at":"../node_modules/core-js/modules/es6.string.code-point-at.js","core-js/modules/es6.string.repeat":"../node_modules/core-js/modules/es6.string.repeat.js","core-js/modules/es6.string.starts-with":"../node_modules/core-js/modules/es6.string.starts-with.js","core-js/modules/es6.string.ends-with":"../node_modules/core-js/modules/es6.string.ends-with.js","core-js/modules/es6.string.includes":"../node_modules/core-js/modules/es6.string.includes.js","core-js/modules/es6.regexp.flags":"../node_modules/core-js/modules/es6.regexp.flags.js","core-js/modules/es6.regexp.match":"../node_modules/core-js/modules/es6.regexp.match.js","core-js/modules/es6.regexp.replace":"../node_modules/core-js/modules/es6.regexp.replace.js","core-js/modules/es6.regexp.split":"../node_modules/core-js/modules/es6.regexp.split.js","core-js/modules/es6.regexp.search":"../node_modules/core-js/modules/es6.regexp.search.js","core-js/modules/es6.array.from":"../node_modules/core-js/modules/es6.array.from.js","core-js/modules/es6.array.of":"../node_modules/core-js/modules/es6.array.of.js","core-js/modules/es6.array.copy-within":"../node_modules/core-js/modules/es6.array.copy-within.js","core-js/modules/es6.array.find":"../node_modules/core-js/modules/es6.array.find.js","core-js/modules/es6.array.find-index":"../node_modules/core-js/modules/es6.array.find-index.js","core-js/modules/es6.array.fill":"../node_modules/core-js/modules/es6.array.fill.js","core-js/modules/es6.array.iterator":"../node_modules/core-js/modules/es6.array.iterator.js","core-js/modules/es6.number.is-finite":"../node_modules/core-js/modules/es6.number.is-finite.js","core-js/modules/es6.number.is-integer":"../node_modules/core-js/modules/es6.number.is-integer.js","core-js/modules/es6.number.is-safe-integer":"../node_modules/core-js/modules/es6.number.is-safe-integer.js","core-js/modules/es6.number.is-nan":"../node_modules/core-js/modules/es6.number.is-nan.js","core-js/modules/es6.number.epsilon":"../node_modules/core-js/modules/es6.number.epsilon.js","core-js/modules/es6.number.min-safe-integer":"../node_modules/core-js/modules/es6.number.min-safe-integer.js","core-js/modules/es6.number.max-safe-integer":"../node_modules/core-js/modules/es6.number.max-safe-integer.js","core-js/modules/es6.math.acosh":"../node_modules/core-js/modules/es6.math.acosh.js","core-js/modules/es6.math.asinh":"../node_modules/core-js/modules/es6.math.asinh.js","core-js/modules/es6.math.atanh":"../node_modules/core-js/modules/es6.math.atanh.js","core-js/modules/es6.math.cbrt":"../node_modules/core-js/modules/es6.math.cbrt.js","core-js/modules/es6.math.clz32":"../node_modules/core-js/modules/es6.math.clz32.js","core-js/modules/es6.math.cosh":"../node_modules/core-js/modules/es6.math.cosh.js","core-js/modules/es6.math.expm1":"../node_modules/core-js/modules/es6.math.expm1.js","core-js/modules/es6.math.fround":"../node_modules/core-js/modules/es6.math.fround.js","core-js/modules/es6.math.hypot":"../node_modules/core-js/modules/es6.math.hypot.js","core-js/modules/es6.math.imul":"../node_modules/core-js/modules/es6.math.imul.js","core-js/modules/es6.math.log1p":"../node_modules/core-js/modules/es6.math.log1p.js","core-js/modules/es6.math.log10":"../node_modules/core-js/modules/es6.math.log10.js","core-js/modules/es6.math.log2":"../node_modules/core-js/modules/es6.math.log2.js","core-js/modules/es6.math.sign":"../node_modules/core-js/modules/es6.math.sign.js","core-js/modules/es6.math.sinh":"../node_modules/core-js/modules/es6.math.sinh.js","core-js/modules/es6.math.tanh":"../node_modules/core-js/modules/es6.math.tanh.js","core-js/modules/es6.math.trunc":"../node_modules/core-js/modules/es6.math.trunc.js","core-js/modules/es7.array.includes":"../node_modules/core-js/modules/es7.array.includes.js","core-js/modules/es7.object.values":"../node_modules/core-js/modules/es7.object.values.js","core-js/modules/es7.object.entries":"../node_modules/core-js/modules/es7.object.entries.js","core-js/modules/es7.object.get-own-property-descriptors":"../node_modules/core-js/modules/es7.object.get-own-property-descriptors.js","core-js/modules/es7.string.pad-start":"../node_modules/core-js/modules/es7.string.pad-start.js","core-js/modules/es7.string.pad-end":"../node_modules/core-js/modules/es7.string.pad-end.js","core-js/modules/web.timers":"../node_modules/core-js/modules/web.timers.js","core-js/modules/web.immediate":"../node_modules/core-js/modules/web.immediate.js","core-js/modules/web.dom.iterable":"../node_modules/core-js/modules/web.dom.iterable.js","regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","whatwg-fetch":"../node_modules/whatwg-fetch/fetch.js","preact":"../node_modules/preact/dist/preact.mjs","../../components":"components/index.js","../../utils/requestService":"utils/requestService.js","../../utils/rootPath":"utils/rootPath.js"}],"pages/Admin/index.jsx":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -19923,7 +20227,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '56984' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '62571' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
