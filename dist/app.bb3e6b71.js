@@ -17435,6 +17435,7 @@ var TimeSlotsManager = function (_Component) {
                                         dateTime: timeSlot.dateTimeISO,
                                         timeZone: 'W. Europe Standard Time'
                                     },
+                                    reminderMinutesBeforeStart: 60,
                                     attendees: [{
                                         emailAddress: {
                                             address: user.mail,
