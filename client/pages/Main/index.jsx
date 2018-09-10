@@ -22,7 +22,7 @@ class Main extends Component {
 
     async checkForAccessToken() {
         const { token } = await requestService.getRequest(`${rootPath}/gettoken`);
-        
+
         if (token !== '' && token !== null) {
             const user = await requestService.getRequest(`https://graph.microsoft.com/beta/me`, token);
 

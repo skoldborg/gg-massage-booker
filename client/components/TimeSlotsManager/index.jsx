@@ -10,7 +10,8 @@ class TimeSlotsManager extends Component {
         super(props);
 
         this.state = {
-            timeSlots: []
+            timeSlots: [],
+            timeSlotsUpdated: false
         }
     }
 
@@ -20,12 +21,37 @@ class TimeSlotsManager extends Component {
 
     async getTimeSlots() {
         const timeSlots = await requestService.getRequest(`${rootPath}/timeslots`);
+        
+        if (!this.state.timeSlotsUpdated) {
+            await this.clearPassedTimeSlots(timeSlots);
+        }
 
         this.setState({
             timeSlots: timeSlots
         });
 
         this.forceUpdate();
+    }
+
+    async clearPassedTimeSlots(timeSlots) {
+        return new Promise((resolve, reject) => {
+            let currentTimeSlots = [];
+
+            for (let i = 0; i < timeSlots.length; i++) {
+                let date = new Date(timeSlots[i].dateTimeISO);
+                let currDate = new Date();
+                let diff = date - currDate;
+
+                if (diff < 0) {
+                    this.removeTimeSlot(timeSlots[i]._id);
+                } else {
+                    currentTimeSlots.push(timeSlots[i]);
+                }
+            }
+
+            this.setState({ timeSlotsUpdated: true });
+            resolve(currentTimeSlots);
+        })
     }
 
     async updateTimeSlot(id, user) {
