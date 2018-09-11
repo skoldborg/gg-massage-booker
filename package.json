@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js & webpack-dev-server",
-    "build": "webpack --progress --optimize-minimize",
+    "start": "nodemon server.js & webpack-dev-server --mode development",
+    "build": "webpack --progress --optimize-minimize --mode production",
     "prod": "NODE_ENV=production npm run build && node server.js"
   },
   "author": "Pierre Sköldborg <pierre.skoldborg@creuna.se>",
