@@ -1,5 +1,4 @@
 import 'whatwg-fetch';
-import 'babel-polyfill';
 import { h, render, Component } from 'preact';
 
 import { TimeSlotsManager } from '../../components';

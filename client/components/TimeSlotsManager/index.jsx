@@ -6,8 +6,8 @@ import requestService from '../../utils/requestService';
 import rootPath from '../../utils/rootPath';
 
 class TimeSlotsManager extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.state = {
             timeSlots: [],
@@ -33,6 +33,12 @@ class TimeSlotsManager extends Component {
         this.forceUpdate();
     }
 
+    /*
+    * Checks time stamps for past dates
+    * and removes them from the database
+    *
+    * @param {Array[Object]} timeSlots
+    */ 
     async clearPassedTimeSlots(timeSlots) {
         return new Promise((resolve, reject) => {
             let currentTimeSlots = [];
@@ -113,9 +119,8 @@ class TimeSlotsManager extends Component {
                 }
             ]
         }
-        const event = await requestService.postRequest('https://graph.microsoft.com/beta/me/events', opts, true, token);
-        
-        console.log('Event created: ', event);
+
+        await requestService.postRequest('https://graph.microsoft.com/beta/me/events', opts, true, token);
     }
 
     render() {

@@ -1,5 +1,4 @@
 import 'whatwg-fetch';
-import 'babel-polyfill';
 import { h, render, Component } from 'preact';
 
 import { TimeSlotsManager } from '../../components';
@@ -38,7 +37,7 @@ class Main extends Component {
     render() {
         return (
             <div class="main">
-                {this.state.showSignInButton &&
+                {this.state.showSignInButton && 
                     <a href="/signin" class="button button--signin">Logga in för att boka en tid</a>
                 }
 

@@ -42,7 +42,7 @@ const router = require('./server/routes/index');
 app.use('/', router);
 
 app.get('/*', (req, res) => {
-    res.render(path.join(__dirname, 'dist/index.html'));
+    res.render(path.join(__dirname, 'client/index.html'));
 })
 
 // Start server

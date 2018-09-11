@@ -3,10 +3,6 @@ import 'babel-polyfill';
 import { h, render, Component } from 'preact';
 
 class TimeSlot extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     handleKeyDown(e, id) {
         const target = e.target;
         const user = this.props.user ? this.props.user : null;
