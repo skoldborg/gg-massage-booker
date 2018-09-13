@@ -70,7 +70,7 @@ const config = {
 		new HTMLWebpackPlugin({
 			template: path.join(__dirname, 'client/index.html')
 		}),
-        new ExtractTextPlugin({ filename: '[name].css', allChunks: true }),
+        new ExtractTextPlugin({ filename: '[name].css', allChunks: true })
         // new BundleAnalyzerPlugin({
         //     analyzerMode: 'static'
         // })
