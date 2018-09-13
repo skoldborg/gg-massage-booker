@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon server.js & webpack-dev-server --mode development",
     "build": "webpack --progress --optimize-minimize --mode production",
-    "prod": "NODE_ENV=production npm run build && node server.js"
+    "prod": "npm run build && cross-env NODE_ENV=production node server.js"
   },
   "author": "Pierre Sköldborg <pierre.skoldborg@creuna.se>",
   "license": "ISC",
@@ -14,6 +14,7 @@
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
+    "cross-env": "^5.2.0",
     "dotenv": "^6.0.0",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
@@ -40,7 +41,7 @@
     "nodemon": "^1.18.3",
     "postcss-loader": "^3.0.0",
     "preact-compat": "^3.18.3",
-    "react-datetime": "^2.15.0",
+    "react-datetime": "^2.8.6",
     "react-dom": "^16.4.2",
     "react-router-dom": "^4.3.1",
     "sass-loader": "^7.1.0",

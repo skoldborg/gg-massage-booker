@@ -11,7 +11,7 @@ render(
     <BrowserRouter>
         <div>
             <Route exact path="/" component={Main} />
-            <Route exact path="/admin" component={Admin} />
+            <Route path="/admin" component={Admin} />
         </div>
     </BrowserRouter>, 
     document.getElementById('app')

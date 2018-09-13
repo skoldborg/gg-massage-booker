@@ -13,6 +13,9 @@ class Main extends Component {
             accessToken: null,
             showSignInButton: false
         }
+
+        console.log('main');
+        
     }
 
     componentDidMount() {

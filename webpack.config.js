@@ -21,7 +21,7 @@ const config = {
             },
             {
                 test: /\.(scss|css)$/,
-                exclude: /node_modules\/(?!react-datetime\/).*/,
+                exclude: /node_modules\/(?!react-datetime\/).*/, 
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: [

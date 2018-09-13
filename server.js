@@ -41,8 +41,9 @@ app.options('*', cors());
 const router = require('./server/routes/index');
 app.use('/', router);
 
+const viewRoute = process.env.NODE_ENV === 'production' ? 'dist' : 'client';
 app.get('/*', (req, res) => {
-    res.render(path.join(__dirname, 'client/index.html'));
+    res.render(path.join(__dirname, `${viewRoute}/index.html`));
 })
 
 // Start server
