@@ -15,11 +15,11 @@ const config = {
     },
 
     // https://webpack.js.org/guides/code-splitting/
-    optimization: {
-        splitChunks: {
-            chunks: 'all'
-        }
-    },
+    // optimization: {
+    //     splitChunks: {
+    //         chunks: 'all'
+    //     }
+    // },
 
     performance: {
         hints: false
