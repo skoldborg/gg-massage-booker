@@ -2,6 +2,9 @@ import 'whatwg-fetch';
 import 'babel-polyfill';
 import { h, render, Component } from 'preact';
 
+import avatarPatrik from './img/avatar-patrik.png';
+import avatarMaria from './img/avatar-maria.png';
+
 class TimeSlot extends Component {
     handleKeyDown(e, id) {
         const target = e.target;
@@ -50,6 +53,10 @@ class TimeSlot extends Component {
                 >
                     <span class="time-slot__label-content">{dateFormatted} - {name}</span>
                 </label>
+
+                <picture class="time-slot__avatar">
+                    <img src={name === 'Patrik' ? avatarPatrik : avatarMaria}></img>
+                </picture>  
 
                 {admin && client === '' &&
                     <button class="time-slot__remove-btn" onClick={() => this.props.removeTimeSlot(_id)}></button>

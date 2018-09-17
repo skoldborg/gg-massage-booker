@@ -38,7 +38,7 @@ class Main extends Component {
         return (
             <div class="main">
                 {this.state.showSignInButton && 
-                    <a href="/signin" class="button button--signin">Logga in för att boka en tid</a>
+                    <a href={`${rootPath}/signin`} class="button button--signin">Logga in för att boka en tid</a>
                 }
 
                 <h2 class="main__subtitle">Tider</h2>
