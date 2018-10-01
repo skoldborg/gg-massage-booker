@@ -12,6 +12,7 @@ class TimeSlot extends Component {
 
         if (e.which === 13) {
             if (user) {
+                // Check if logged in users mail matches input email
                 if (target.value === user.mail && target.parentNode.getAttribute(id) === id) {
                     target.parentNode.classList.add('time-slot--taken');
                 }
@@ -19,8 +20,22 @@ class TimeSlot extends Component {
 
             }
 
-            this.props.updateTimeSlot(id, user);
+            if (target.value !== '') {
+                this.props.updateTimeSlot(id, user);
+            } else {
+                this.props.updateTimeSlot(id, null);
+            }
         }
+    }
+
+    setDisabledAttribute() {
+        let disabled = false;
+
+        if (this.props.user === undefined && !this.props.admin) {
+            disabled = true;
+        }
+
+        return disabled;
     }
 
     render({ _id, name, dateFormatted, client, admin, user }) {
@@ -29,12 +44,11 @@ class TimeSlot extends Component {
             : ''
         
         const additionalClasses = client !== '' ? 'time-slot--taken' : '';
-        const disabled = user === undefined && !admin ? true : false
+        const disabled = this.setDisabledAttribute();
         
         return (
             <div id={_id} class={`time-slot ${additionalClasses}`}>
                 <input 
-                    style={client !== '' && !admin ? 'pointer-events: none; cursor:default;' : ''}
                     class="time-slot__input" 
                     type="text" 
                     id={`input-${dateFormatted}-${name}`}
@@ -46,8 +60,7 @@ class TimeSlot extends Component {
                     <div>{client}</div>
                 </input>
                 
-                <label 
-                    style={client !== '' && !admin ? 'pointer-events: none; cursor:default;' : ''}
+                <label
                     class="time-slot__label" 
                     for={`input-${dateFormatted}-${name}`}
                 >

@@ -152,7 +152,6 @@ class TimeSlotsManager extends Component {
         })
 
         return (
-
             <div className="time-slots-manager">
                 <div className={`time-slots-manager__list ` + (bookedSlots.length ? '' : 'time-slots-manager__list--single')}>
                     <div className="time-slots-manager__list-col">

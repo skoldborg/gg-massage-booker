@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js & webpack-dev-server --mode development",
+    "start": "nodemon server.js & webpack-dev-server --hot --mode development",
     "build": "webpack --progress --optimize-minimize --mode production",
     "prod": "cross-env NODE_ENV=production node server.js"
   },
