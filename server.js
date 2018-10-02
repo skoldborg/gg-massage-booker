@@ -42,13 +42,14 @@ const router = require('./server/routes/index');
 app.use('/', router);
 
 const viewRoute = process.env.NODE_ENV === 'production' ? 'dist' : 'client';
+
 app.get('/*', (req, res) => {
     res.render(path.join(__dirname, `${viewRoute}/index.html`));
 })
 
 // Kill node process on terminal exit & exceptions
-process.on('SIGINT', () => { process.exit(); });
-process.on('uncaughtException', () => { process.exit(); })
+// process.on('SIGINT', () => { process.exit(); });
+// process.on('uncaughtException', () => { process.exit(); })
 
 // Start server
 const PORT = process.env.PORT || 3001;

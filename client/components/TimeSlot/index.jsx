@@ -33,6 +33,10 @@ class TimeSlot extends Component {
 
         if (this.props.user === undefined && !this.props.admin) {
             disabled = true;
+        } else if (this.props.user !== undefined && this.props.client !== undefined) {
+            if (this.props.user.displayName !== this.props.client && this.props.client !== '') {
+                disabled = true;
+            }
         }
 
         return disabled;

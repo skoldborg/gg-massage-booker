@@ -11,7 +11,8 @@ const config = {
     
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+        publicPath: '/'
     },
 
     // https://webpack.js.org/guides/code-splitting/
@@ -66,13 +67,7 @@ const config = {
 
     devtool: 'source-map',
 
-    devServer: {
-        host: '0.0.0.0',
-        disableHostCheck: true,
-        port: 3000,
-        historyApiFallback: true,
-        stats: 'errors-only'
-    },
+    watch: true,
 
     plugins: [
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
