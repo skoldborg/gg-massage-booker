@@ -2,15 +2,26 @@ import 'whatwg-fetch';
 import 'babel-polyfill';
 import { h, render, Component } from 'preact';
 
+import { Loader } from '../../components';
 import avatarPatrik from './img/avatar-patrik.png';
 import avatarMaria from './img/avatar-maria.png';
 
 class TimeSlot extends Component {
-    handleKeyDown(e, id) {
+    constructor() {
+        super();
+
+        this.state = {
+            showLoader: false
+        }
+    }
+
+    async handleKeyDown(e, id) {
         const target = e.target;
         const user = this.props.user ? this.props.user : null;
 
         if (e.which === 13) {
+            this.setState({ showLoader: true });
+
             if (user) {
                 // Check if logged in users mail matches input email
                 if (target.value === user.mail && target.parentNode.getAttribute(id) === id) {
@@ -21,10 +32,12 @@ class TimeSlot extends Component {
             }
 
             if (target.value !== '') {
-                this.props.updateTimeSlot(id, user);
+                await this.props.updateTimeSlot(id, user);
             } else {
-                this.props.updateTimeSlot(id, null);
+                await this.props.updateTimeSlot(id, null);
             }
+
+            this.setState({ showLoader: false });
         }
     }
 
@@ -52,6 +65,10 @@ class TimeSlot extends Component {
         
         return (
             <div id={_id} class={`time-slot ${additionalClasses}`}>
+                {this.state.showLoader &&
+                    <Loader />
+                }
+
                 <input 
                     class="time-slot__input" 
                     type="text" 

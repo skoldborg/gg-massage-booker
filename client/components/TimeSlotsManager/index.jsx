@@ -11,8 +11,7 @@ class TimeSlotsManager extends Component {
 
         this.state = {
             timeSlots: [],
-            timeSlotsUpdated: false,
-            showLoader: false
+            timeSlotsUpdated: false
         }
     }
 
@@ -68,7 +67,6 @@ class TimeSlotsManager extends Component {
             clientMail: user ? user.mail : ''
         };
 
-        this.setState({ showLoader: true });
         const timeSlot = await requestService.postRequest(`${rootPath}/timeslots/${id}`, opts);
 
         if (timeSlot.name !== undefined) {
@@ -76,7 +74,6 @@ class TimeSlotsManager extends Component {
                 await this.createCalendarEvent(this.props.accessToken, timeSlot, user);
             }
 
-            this.setState({ showLoader: false });
             this.getTimeSlots();
         }
     }
@@ -156,19 +153,15 @@ class TimeSlotsManager extends Component {
         })
 
         return (
-            <div className="time-slots-manager">
-                {this.state.showLoader &&
-                    <Loader />
-                }
-
-                <div className={`time-slots-manager__list ` + (bookedSlots.length ? '' : 'time-slots-manager__list--single')}>
-                    <div className="time-slots-manager__list-col">
+            <div class="time-slots-manager">
+                <div class={`time-slots-manager__list ` + (bookedSlots.length ? '' : 'time-slots-manager__list--single')}>
+                    <div class="time-slots-manager__list-col">
                         {freeSlots.map(timeSlot => {
                             return timeSlot
                         })}
                     </div>
                     {bookedSlots.length > 0 &&
-                        <div className="time-slots-manager__list-col">
+                        <div class="time-slots-manager__list-col">
                             {bookedSlots.map(timeSlot => {
                                 return timeSlot
                             })}
