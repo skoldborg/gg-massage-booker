@@ -25,10 +25,10 @@ app.set('view engine', 'html');
 app.use(cookieParser())
 
 // Static assets
-// app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // Favicon
-app.use(favicon(path.join(__dirname, 'dist/favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'dist/favicon.ico')));
 
 // import models
 require(path.join(__dirname, 'server/models/TimeSlot'));
