@@ -1,7 +1,7 @@
 import { h, render, Component } from 'preact';
 import moment from 'moment';
 
-import { TimeSlot, AddTimeSlot } from '../../components';
+import { TimeSlot, AddTimeSlot, Loader } from '../../components';
 import requestService from '../../utils/requestService';
 import rootPath from '../../utils/rootPath';
 
@@ -11,7 +11,8 @@ class TimeSlotsManager extends Component {
 
         this.state = {
             timeSlots: [],
-            timeSlotsUpdated: false
+            timeSlotsUpdated: false,
+            showLoader: false
         }
     }
 
@@ -30,6 +31,7 @@ class TimeSlotsManager extends Component {
             timeSlots: timeSlots
         });
 
+        // Built in method
         this.forceUpdate();
     }
 
@@ -65,7 +67,8 @@ class TimeSlotsManager extends Component {
             client: user ? user.displayName : '',
             clientMail: user ? user.mail : ''
         };
-        
+
+        this.setState({ showLoader: true });
         const timeSlot = await requestService.postRequest(`${rootPath}/timeslots/${id}`, opts);
 
         if (timeSlot.name !== undefined) {
@@ -73,6 +76,7 @@ class TimeSlotsManager extends Component {
                 await this.createCalendarEvent(this.props.accessToken, timeSlot, user);
             }
 
+            this.setState({ showLoader: false });
             this.getTimeSlots();
         }
     }
@@ -151,8 +155,14 @@ class TimeSlotsManager extends Component {
             }
         })
 
+        console.log('showLoader', this.state.showLoader);
+
         return (
             <div className="time-slots-manager">
+                {this.state.showLoader &&
+                    <Loader />
+                }
+
                 <div className={`time-slots-manager__list ` + (bookedSlots.length ? '' : 'time-slots-manager__list--single')}>
                     <div className="time-slots-manager__list-col">
                         {freeSlots.map(timeSlot => {

@@ -1,0 +1,24 @@
+import { h, render } from 'preact';
+
+import './loader.scss';
+
+const Loader = () => {
+    return (
+        <div class="loader-container">
+            <div class="loader-circle1 loader-circle"></div>
+            <div class="loader-circle2 loader-circle"></div>
+            <div class="loader-circle3 loader-circle"></div>
+            <div class="loader-circle4 loader-circle"></div>
+            <div class="loader-circle5 loader-circle"></div>
+            <div class="loader-circle6 loader-circle"></div>
+            <div class="loader-circle7 loader-circle"></div>
+            <div class="loader-circle8 loader-circle"></div>
+            <div class="loader-circle9 loader-circle"></div>
+            <div class="loader-circle10 loader-circle"></div>
+            <div class="loader-circle11 loader-circle"></div>
+            <div class="loader-circle12 loader-circle"></div>
+        </div>
+    )
+}
+
+export default Loader;
