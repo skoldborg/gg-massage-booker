@@ -155,8 +155,6 @@ class TimeSlotsManager extends Component {
             }
         })
 
-        console.log('showLoader', this.state.showLoader);
-
         return (
             <div className="time-slots-manager">
                 {this.state.showLoader &&
