@@ -6,6 +6,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const favicon = require('serve-favicon');
 const app = express();
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }, (error) => {
@@ -25,6 +26,9 @@ app.use(cookieParser())
 
 // Static assets
 app.use(express.static(path.join(__dirname, 'dist')));
+
+// Favicon
+app.use(favicon(path.join(__dirname, 'dist/favicon.ico')));
 
 // import models
 require(path.join(__dirname, 'server/models/TimeSlot'));
