@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
 const config = {
@@ -74,10 +75,14 @@ const config = {
 		new HTMLWebpackPlugin({
 			template: path.join(__dirname, 'client/index.html')
 		}),
-        new ExtractTextPlugin({ filename: '[name].css', allChunks: true })
+        new ExtractTextPlugin({ filename: '[name].css', allChunks: true }),
+        new CopyWebpackPlugin([{
+            from: './favicon.ico'
+        }])
         // new BundleAnalyzerPlugin({
         //     analyzerMode: 'static'
         // })
+
     ],
     
     resolve: {
