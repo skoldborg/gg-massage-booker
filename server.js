@@ -25,7 +25,7 @@ app.set('view engine', 'html');
 app.use(cookieParser())
 
 // Static assets
-app.use(express.static(path.join(__dirname, 'dist')));
+// app.use(express.static(path.join(__dirname, 'dist')));
 
 // Favicon
 app.use(favicon(path.join(__dirname, 'dist/favicon.ico')));
