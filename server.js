@@ -28,7 +28,10 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // Favicon
-app.use(favicon('./dist/favicon.ico'));
+app.use(favicon(path.join(__dirname, 'dist', 'favicon.ico')));
+
+console.log('PATH-------', path.join(__dirname, 'dist', 'favicon.ico'));
+
 
 // Import models
 require(path.join(__dirname, 'server/models/TimeSlot'));
