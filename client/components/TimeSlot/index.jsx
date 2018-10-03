@@ -90,10 +90,14 @@ class TimeSlot extends Component {
 
                 <picture class="time-slot__avatar">
                     <img src={name === 'Patrik' ? avatarPatrik : avatarMaria}></img>
-                </picture>  
+                </picture> 
 
-                {admin && client === '' &&
+                {admin && client !== '' &&
                     <button class="time-slot__remove-btn" onClick={() => this.props.removeTimeSlot(_id)}></button>
+                }
+
+                {!disabled && client !== '' && !admin &&
+                    <button class="time-slot__remove-btn" onClick={() => this.props.updateTimeSlot(_id, null)}></button>
                 }
             </div>
         )
