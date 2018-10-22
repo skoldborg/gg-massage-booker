@@ -55,6 +55,17 @@ class TimeSlot extends Component {
         return disabled;
     }
 
+    setAvatarPicture(name) {
+        switch (name.toLowerCase()) {
+            case 'patrik':
+                return avatarPatrik
+            case 'maria':
+                return avatarMaria
+            default:
+                return undefined;
+        }
+    }
+
     render({ _id, name, dateFormatted, client, admin, user }) {
         let defaultInputValue = user !== undefined
             ? user.mail
@@ -62,6 +73,7 @@ class TimeSlot extends Component {
         
         const additionalClasses = client !== '' ? 'time-slot--taken' : '';
         const disabled = this.setDisabledAttribute();
+        const avatar = this.setAvatarPicture(name);
         
         return (
             <div id={_id} class={`time-slot ${additionalClasses}`}>
@@ -89,7 +101,9 @@ class TimeSlot extends Component {
                 </label>
 
                 <picture class="time-slot__avatar">
-                    <img src={name === 'Patrik' ? avatarPatrik : avatarMaria}></img>
+                    {avatar !== undefined &&
+                        <img src={avatar}></img>
+                    } 
                 </picture> 
 
                 {admin && client !== '' &&
