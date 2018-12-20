@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon server.js & webpack --mode development",
     "build": "webpack --progress --optimize-minimize --mode production",
-    "prod": "cross-env NODE_ENV=production node server.js"
+    "prod": "cross-env NODE_ENV=production node server.js",
+    "postinstall": "npm run build"
   },
   "author": "Pierre Sköldborg <pierre.skoldborg@creuna.se>",
   "license": "ISC",
