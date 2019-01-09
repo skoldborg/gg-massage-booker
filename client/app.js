@@ -1,18 +1,9 @@
-import {
-    BrowserRouter,
-    Route
-} from 'react-router-dom';
 import { h, render } from 'preact';
 
-import { Main, Admin } from './pages';
+import { App } from './components';
 import styles from './styles/styles.scss';
 
 render(
-    <BrowserRouter>
-        <div>
-            <Route exact path="/" component={Main} />
-            <Route path="/admin" component={Admin} />
-        </div>
-    </BrowserRouter>, 
+    <App />, 
     document.getElementById('app')
 );
