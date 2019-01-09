@@ -19,6 +19,7 @@
     "dotenv": "^6.0.0",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
     "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.2.9",
     "preact": "^8.3.1",

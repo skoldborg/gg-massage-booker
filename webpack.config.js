@@ -8,8 +8,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
 module.exports = (env, options) => {
-    console.log('options', options.mode);
-    
     return {
         entry: ['babel-polyfill', path.join(__dirname, 'client/app.js')],
         
@@ -75,13 +73,13 @@ module.exports = (env, options) => {
 
         plugins: [
             new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-            new HTMLWebpackPlugin({
-                inject: false,
-                hash: true,
-                template: './client/index.html',
-                filename: 'index.html',
-                rootPath: options.mode === 'development' ? 'http://localhost:3001' : 'https://gg-massage-booker.herokuapp.com'
-            }),
+            // new HTMLWebpackPlugin({
+            //     inject: false,
+            //     hash: true,
+            //     template: './client/index.html',
+            //     filename: 'index.html',
+            //     rootPath: options.mode === 'development' ? 'http://localhost:3001' : 'https://gg-massage-booker.herokuapp.com'
+            // }),
             new ExtractTextPlugin({ filename: '[name].css', allChunks: true }),
             new CopyWebpackPlugin([{
                 from: './favicon.ico'

@@ -26,13 +26,13 @@ class Main extends Component {
             const user = await requestService.getRequest(`https://graph.microsoft.com/beta/me`, token);
             const userPhotoBlob = await requestService.getRequest(`https://graph.microsoft.com/beta/me/photo/$value`, token, 'image/jpg');
             
-            if (userPhotoBlob.type === 'image/jpeg') {
-                const userPhotoUrl = URL.createObjectURL(userPhotoBlob);
-                const userPhoto = document.querySelector('img');
-                userPhoto.addEventListener('load', () => URL.revokeObjectURL(userPhotoUrl));
+            // if (userPhotoBlob.type === 'image/jpeg') {
+            //     const userPhotoUrl = URL.createObjectURL(userPhotoBlob);
+            //     const userPhoto = document.querySelector('img');
+            //     userPhoto.addEventListener('load', () => URL.revokeObjectURL(userPhotoUrl));
 
-                userPhoto.src = userPhotoUrl;
-            }
+            //     userPhoto.src = userPhotoUrl;
+            // }
 
             this.setState({
                 accessToken: token,

@@ -1,11 +1,5 @@
-import TimeSlot from './TimeSlot';
-import TimeSlotsManager from './TimeSlotsManager';
-import AddTimeSlot from './AddTimeSlot';
-import Loader from './Loader';
-
-export {
-    TimeSlot,
-    TimeSlotsManager,
-    AddTimeSlot,
-    Loader
-}
+export {default as TimeSlot} from './TimeSlot';
+export {default as TimeSlotsManager} from './TimeSlotsManager';
+export {default as AddTimeSlot} from './AddTimeSlot';
+export {default as Loader} from './Loader';
+export {default as Header} from './Header';
