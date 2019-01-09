@@ -18,10 +18,6 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }, (error) => 
 mongoose.Promise = global.Promise;
 
 // View engine
-// app.set('views', __dirname + '/client');
-// app.engine('html', require('ejs').renderFile);
-// app.set('view engine', 'html');
-
 app.engine('hbs', exphbs({
     extname: '.hbs',
     layoutsDir: path.join(__dirname, 'server/views/')
