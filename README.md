@@ -32,7 +32,6 @@ Production server is now listening on http://localhost:3001
 
 ## Requirements
 
-Needs a MongoDB connection string in a .env file,
-MONGODB=mongodb://user:password@host:port/collection
+See .env.example for required environment variables.
 
-Application registered at https://apps.dev.microsoft.com for OAuth
+Application registered at https://apps.dev.microsoft.com for OAuth.
