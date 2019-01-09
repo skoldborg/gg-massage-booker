@@ -68,7 +68,7 @@ const config = {
 
     devtool: 'source-map',
 
-    watch: true,
+    watch: false,
 
     plugins: [
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),

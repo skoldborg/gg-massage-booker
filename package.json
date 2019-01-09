@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js & webpack --mode development",
-    "build": "webpack --progress --optimize-minimize --mode production",
+    "start": "nodemon server.js & webpack --mode=development -w",
+    "build": "webpack --mode=production --progress --optimize-minimize",
     "prod": "cross-env NODE_ENV=production node server.js",
     "postinstall": "npm run build"
   },
