@@ -31,18 +31,11 @@ class App extends Component {
             const user = await requestService.getRequest(`https://graph.microsoft.com/beta/me`, token);
             const userPhotoBlob = await requestService.getRequest(`https://graph.microsoft.com/beta/me/photo/$value`, token, 'image/jpg');
 
-            // if (userPhotoBlob.type === 'image/jpeg') {
-            //     const userPhotoUrl = URL.createObjectURL(userPhotoBlob);
-            //     const userPhoto = document.querySelector('img');
-            //     userPhoto.addEventListener('load', () => URL.revokeObjectURL(userPhotoUrl));
-
-            //     userPhoto.src = userPhotoUrl;
-            // }
-
             this.setState({
                 accessToken: token,
                 user: user,
-                userSignedIn: true
+                userSignedIn: true,
+                userPhotoBlob
             })
         } else {
             this.setState({ userSignedIn: false })
@@ -50,12 +43,12 @@ class App extends Component {
     }
 
     render() {
-        const { accessToken, user, userSignedIn } = this.state;
+        const { accessToken, user, userSignedIn, userPhotoBlob } = this.state;
         
         return (
             <Router>
                 <div>
-                    <Header userSignedIn={userSignedIn} />
+                    <Header user={user} userSignedIn={userSignedIn} userPhotoBlob={userPhotoBlob} />
                     <Route exact path="/" component={Main} accessToken={accessToken} user={user} />
                     <Route path="/admin" component={Admin} />
                 </div>
