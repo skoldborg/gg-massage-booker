@@ -12,8 +12,8 @@ const config = {
     
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: 'bundle.js',
-        publicPath: '/'
+        filename: 'app.js',
+        publicPath: ''
     },
 
     // https://webpack.js.org/guides/code-splitting/
@@ -73,7 +73,10 @@ const config = {
     plugins: [
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 		new HTMLWebpackPlugin({
-			template: path.join(__dirname, 'client/index.html')
+			inject: false,
+            hash: true,
+            template: './client/index.html',
+            filename: 'index.html'
 		}),
         new ExtractTextPlugin({ filename: '[name].css', allChunks: true }),
         new CopyWebpackPlugin([{
