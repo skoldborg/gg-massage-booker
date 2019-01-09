@@ -5,6 +5,8 @@ import { h, render, Component } from 'preact';
 import { Loader } from '../../components';
 import avatarPatrik from './img/avatar-patrik.png';
 import avatarMaria from './img/avatar-maria.png';
+import avatarMartin from './img/avatar-martin.png';
+import avatarEmma from './img/avatar-emma.png';
 
 class TimeSlot extends Component {
     constructor() {
@@ -61,6 +63,10 @@ class TimeSlot extends Component {
                 return avatarPatrik
             case 'maria':
                 return avatarMaria
+            case 'martin':
+                return avatarMartin
+            case 'emma':
+                return avatarEmma
             default:
                 return undefined;
         }
