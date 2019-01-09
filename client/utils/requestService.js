@@ -1,11 +1,11 @@
 class RequestService {
-    async getRequest(endpoint, token) {
+    async getRequest(endpoint, token, responseType) {
         const headers = token ? {
-            'Accept': 'application/json',
+            'Accept': responseType ? responseType : 'application/json',
             'Authorization': `Bearer ${token}`
         } : {
-            'Accept': 'application/json'
-        };
+            'Accept': responseType ? responseType : 'application/json',
+        };        
 
         try {
             const response = await fetch(endpoint, {
@@ -13,7 +13,11 @@ class RequestService {
             });
 
             if (response.ok) {
-                return await response.json();
+                if (headers['Accept'] === 'image/jpg') {
+                    return response.blob();
+                } else {
+                    return await response.json();
+                }
             } else {
                 return response;
             }
