@@ -15,7 +15,9 @@ class App extends Component {
 
         this.state = {
             accessToken: null,
-            userSignedIn: true
+            user: null,
+            userSignedIn: true,
+            userPhotoBlob: null
         }
     }
 
@@ -35,7 +37,7 @@ class App extends Component {
                 accessToken: token,
                 user: user,
                 userSignedIn: true,
-                userPhotoBlob
+                userPhotoBlob: userPhotoBlob
             })
         } else {
             this.setState({ userSignedIn: false })

@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
 import { h, render, Component } from 'preact';
 
-import { TimeSlotsManager, Header } from '../../components';
+import { TimeSlotsManager } from '../../components';
 
 class Main extends Component {
     render() {
