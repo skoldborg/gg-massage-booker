@@ -45,13 +45,10 @@ class App extends Component {
     }
 
     render() {
-        const { accessToken, user, userSignedIn, userPhotoBlob } = this.state;
-        console.log('App', user);
-        
         return (
             <Router>
                 <div>
-                    <Header user={user} userSignedIn={userSignedIn} userPhotoBlob={userPhotoBlob} />
+                    <Header {...this.state} />
                     <Route exact path="/" 
                         render={props => <Main {...this.state} />}
                     />
