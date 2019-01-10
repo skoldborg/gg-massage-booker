@@ -127,8 +127,21 @@ class TimeSlotsManager extends Component {
     render({ user, admin }) {
         let freeSlots = [];
         let bookedSlots = [];
+        const monthsMap = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: [], 11: [] };
+
+        this.state.timeSlots.forEach(timeSlot => {
+            const dateTimeIso = timeSlot.dateTimeISO;
+            const d = new Date(dateTimeIso);
+            const monthIndex = d.getMonth();
+            
+            monthsMap[monthIndex].push(timeSlot);
+        })
+
+        console.log(monthsMap);
+        
         
         this.state.timeSlots.map(timeSlot => { 
+            
             if (timeSlot.client !== '') { 
                 bookedSlots.push(
                     <TimeSlot

@@ -48,7 +48,7 @@ class TimeSlot extends Component {
         
         if (this.props.user === null && !this.props.admin) {
             disabled = true;
-        } else if (this.props.user !== null && this.props.client !== undefined) {
+        } else if (this.props.user && this.props.client !== undefined) {
             if (this.props.user.displayName !== this.props.client && this.props.client !== '') {
                 disabled = true;
             }
@@ -73,7 +73,7 @@ class TimeSlot extends Component {
     }
 
     render({ _id, name, dateFormatted, client, admin, user }) {
-        let defaultInputValue = user !== null
+        let defaultInputValue = user
             ? user.mail
             : ''
         
