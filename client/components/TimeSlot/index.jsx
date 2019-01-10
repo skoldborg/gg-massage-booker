@@ -45,10 +45,10 @@ class TimeSlot extends Component {
 
     setDisabledAttribute() {
         let disabled = false;
-
-        if (this.props.user === undefined && !this.props.admin) {
+        
+        if (this.props.user === null && !this.props.admin) {
             disabled = true;
-        } else if (this.props.user !== undefined && this.props.client !== undefined) {
+        } else if (this.props.user !== null && this.props.client !== undefined) {
             if (this.props.user.displayName !== this.props.client && this.props.client !== '') {
                 disabled = true;
             }
@@ -73,7 +73,7 @@ class TimeSlot extends Component {
     }
 
     render({ _id, name, dateFormatted, client, admin, user }) {
-        let defaultInputValue = user !== undefined
+        let defaultInputValue = user !== null
             ? user.mail
             : ''
         

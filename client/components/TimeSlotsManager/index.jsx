@@ -124,7 +124,7 @@ class TimeSlotsManager extends Component {
         await requestService.postRequest('https://graph.microsoft.com/beta/me/events', opts, true, token);
     }
 
-    render() {
+    render({ user, admin }) {
         let freeSlots = [];
         let bookedSlots = [];
         
@@ -133,20 +133,20 @@ class TimeSlotsManager extends Component {
                 bookedSlots.push(
                     <TimeSlot
                         {...timeSlot}
-                        user={this.props.user}
+                        user={user}
                         updateTimeSlot={(id, user) => this.updateTimeSlot(id, user)}
                         removeTimeSlot={(id) => this.removeTimeSlot(id)}
-                        admin={this.props.admin}
+                        admin={admin}
                     />
                 );
             } else {
                 freeSlots.push(
                     <TimeSlot
                         {...timeSlot}
-                        user={this.props.user}
+                        user={user}
                         updateTimeSlot={(id, user) => this.updateTimeSlot(id, user)}
                         removeTimeSlot={(id) => this.removeTimeSlot(id)}
-                        admin={this.props.admin}
+                        admin={admin}
                     />
                 );
             }
@@ -169,7 +169,7 @@ class TimeSlotsManager extends Component {
                     }
                 </div>
 
-                {this.props.admin &&
+                {admin &&
                     <div class="time-slots-manager__add">
                         <h2 class="time-slots-manager__subtitle">Lägg till en tid</h2>
 

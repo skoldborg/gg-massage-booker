@@ -4,9 +4,7 @@ import { h, render, Component } from 'preact';
 import { TimeSlotsManager } from '../../components';
 
 class Main extends Component {
-    render() {
-        const { accessToken, user } = this.props;
-
+    render({ accessToken, user }) {
         return (
             <div class="main">
                 <h2 class="main__subtitle">Tider</h2>

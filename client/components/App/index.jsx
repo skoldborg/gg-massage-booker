@@ -32,7 +32,7 @@ class App extends Component {
         if (token !== '' && token !== null) {
             const user = await requestService.getRequest(`https://graph.microsoft.com/beta/me`, token);
             const userPhotoBlob = await requestService.getRequest(`https://graph.microsoft.com/beta/me/photo/$value`, token, 'image/jpg');
-
+            
             this.setState({
                 accessToken: token,
                 user: user,
@@ -46,13 +46,18 @@ class App extends Component {
 
     render() {
         const { accessToken, user, userSignedIn, userPhotoBlob } = this.state;
+        console.log('App', user);
         
         return (
             <Router>
                 <div>
                     <Header user={user} userSignedIn={userSignedIn} userPhotoBlob={userPhotoBlob} />
-                    <Route exact path="/" component={Main} accessToken={accessToken} user={user} />
-                    <Route path="/admin" component={Admin} />
+                    <Route exact path="/" 
+                        render={props => <Main {...this.state} />}
+                    />
+                    <Route path="/admin" 
+                        render={props => <Admin {...this.state} />}
+                    />
                 </div>
             </Router>
         )
