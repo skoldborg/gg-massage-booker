@@ -125,61 +125,42 @@ class TimeSlotsManager extends Component {
     }
 
     render({ user, admin }) {
-        let freeSlots = [];
-        let bookedSlots = [];
         const monthsMap = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: [], 11: [] };
+        const monthNames = ['Jan', 'Feb', 'Mars', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sept', 'Okt', 'Nov', 'Dec'];
 
         this.state.timeSlots.forEach(timeSlot => {
             const dateTimeIso = timeSlot.dateTimeISO;
             const d = new Date(dateTimeIso);
             const monthIndex = d.getMonth();
             
-            monthsMap[monthIndex].push(timeSlot);
-        })
-
-        console.log(monthsMap);
-        
-        
-        this.state.timeSlots.map(timeSlot => { 
-            
-            if (timeSlot.client !== '') { 
-                bookedSlots.push(
-                    <TimeSlot
-                        {...timeSlot}
-                        user={user}
-                        updateTimeSlot={(id, user) => this.updateTimeSlot(id, user)}
-                        removeTimeSlot={(id) => this.removeTimeSlot(id)}
-                        admin={admin}
-                    />
-                );
-            } else {
-                freeSlots.push(
-                    <TimeSlot
-                        {...timeSlot}
-                        user={user}
-                        updateTimeSlot={(id, user) => this.updateTimeSlot(id, user)}
-                        removeTimeSlot={(id) => this.removeTimeSlot(id)}
-                        admin={admin}
-                    />
-                );
-            }
-        })
+            monthsMap[monthIndex].push(
+                <TimeSlot 
+                    {...timeSlot}
+                    user={user}
+                    updateTimeSlot={(id, user) => this.updateTimeSlot(id, user)}
+                    removeTimeSlot={(id) => this.removeTimeSlot(id)}
+                    admin={admin}
+                />
+            );
+        });
 
         return (
             <div class="time-slots-manager">
-                <div class={`time-slots-manager__list ` + (bookedSlots.length ? '' : 'time-slots-manager__list--single')}>
-                    <div class="time-slots-manager__list-col">
-                        {freeSlots.map(timeSlot => {
-                            return timeSlot
-                        })}
-                    </div>
-                    {bookedSlots.length > 0 &&
-                        <div class="time-slots-manager__list-col">
-                            {bookedSlots.map(timeSlot => {
-                                return timeSlot
-                            })}
-                        </div>
-                    }
+                <div class={`time-slots-manager__list `}>
+                    {Object.keys(monthsMap).map(key => {
+                        if (monthsMap[key].length > 0) {
+                            return (
+                                <div class="time-slots-manager__list-col">
+                                    <h3 class="time-slots-manager__list-col-heading">{monthNames[key]}</h3>
+                                    {monthsMap[key].map(timeSlot => {
+                                        console.log(timeSlot);
+                                        
+                                        return timeSlot
+                                    })}
+                                </div>
+                            )
+                        }
+                    })}
                 </div>
 
                 {admin &&

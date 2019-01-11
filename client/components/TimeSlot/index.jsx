@@ -17,27 +17,15 @@ class TimeSlot extends Component {
         }
     }
 
-    async handleKeyDown(e, id) {
+    async handleClick(e, id) {
         const target = e.target;
         const user = this.props.user ? this.props.user : null;
 
-        if (e.which === 13) {
+        if (user) {
+            target.classList.add('time-slot--taken');
             this.setState({ showLoader: true });
 
-            if (user) {
-                // Check if logged in users mail matches input email
-                if (target.value === user.mail && target.parentNode.getAttribute(id) === id) {
-                    target.parentNode.classList.add('time-slot--taken');
-                }
-                e.target.blur();
-
-            }
-
-            if (target.value !== '') {
-                await this.props.updateTimeSlot(id, user);
-            } else {
-                await this.props.updateTimeSlot(id, null);
-            }
+            await this.props.updateTimeSlot(id, user);
 
             this.setState({ showLoader: false });
         }
@@ -80,46 +68,36 @@ class TimeSlot extends Component {
         const additionalClasses = client !== '' ? 'time-slot--taken' : '';
         const disabled = this.setDisabledAttribute();
         const avatar = this.setAvatarPicture(name);
+        console.log(client);
         
         return (
-            <div id={_id} class={`time-slot ${additionalClasses}`}>
+            <button id={_id} class={`time-slot ${additionalClasses}`} disabled={disabled} onClick={(e) => this.handleClick(e, _id)}>
                 {this.state.showLoader &&
                     <Loader />
                 }
 
-                <input 
-                    class="time-slot__input" 
-                    type="text" 
-                    id={`input-${dateFormatted}-${name}`}
-                    value={client ? client : defaultInputValue}
-                    onKeyDown={e => this.handleKeyDown(e, _id)}
-                    ref={input => { this.input = input }}
-                    disabled={disabled}
-                >
-                    <div>{client}</div>
-                </input>
-                
-                <label
-                    class="time-slot__label" 
-                    for={`input-${dateFormatted}-${name}`}
-                >
-                    <span class="time-slot__label-content">{dateFormatted} - {name}</span>
-                </label>
-
                 <picture class="time-slot__avatar">
                     {avatar !== undefined &&
                         <img src={avatar}></img>
-                    } 
+                    }
                 </picture> 
+                
+                <span class="time-slot__label">
+                    {client !== '' ? (
+                        client
+                    ) : (
+                        dateFormatted
+                    )}
+                </span>
 
-                {admin && client !== '' &&
+                {/* {admin && client !== '' &&
                     <button class="time-slot__remove-btn" onClick={() => this.props.removeTimeSlot(_id)}></button>
                 }
 
                 {!disabled && client !== '' && !admin &&
                     <button class="time-slot__remove-btn" onClick={() => this.props.updateTimeSlot(_id, null)}></button>
-                }
-            </div>
+                } */}
+            </button>
         )
     }
 }

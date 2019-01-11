@@ -5,7 +5,7 @@
     grid-template-columns: 1fr;
 
     @media screen and (min-width: 768px) {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         grid-column-gap: 16px;
         max-width: 800px;
         margin: 0 auto;
@@ -22,4 +22,13 @@
 
 .time-slots-manager__add {
     margin: 2em 0;
+}
+
+.time-slots-manager__list-col {
+    margin-bottom: 1.5em;
+}
+
+.time-slots-manager__list-col-heading {
+    text-align: center;
+    margin-top: 0;
 }
