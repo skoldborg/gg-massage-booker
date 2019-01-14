@@ -68,7 +68,6 @@ class TimeSlot extends Component {
         const additionalClasses = client !== '' ? 'time-slot--taken' : '';
         const disabled = this.setDisabledAttribute();
         const avatar = this.setAvatarPicture(name);
-        console.log(client);
         
         return (
             <button id={_id} class={`time-slot ${additionalClasses}`} disabled={disabled} onClick={(e) => this.handleClick(e, _id)}>
