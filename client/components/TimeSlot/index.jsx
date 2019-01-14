@@ -13,22 +13,42 @@ class TimeSlot extends Component {
         super();
 
         this.state = {
-            showLoader: false
+            showLoader: false,
+            overlayHidden: true
         }
     }
 
-    async handleClick(e, id) {
-        const target = e.target;
+    handleClick() {
+        if (this.state.overlayHidden) {
+            this.setState({ overlayHidden: false });
+        }
+    }
+    
+    hideOverlay(e) {
+        e.preventDefault();
+
+        this.setState({ overlayHidden: true })
+    }
+
+    async confirmTimeSlot(id) {
         const user = this.props.user ? this.props.user : null;
+        this.setState({ overlayHidden: true });
 
         if (user) {
-            target.classList.add('time-slot--taken');
-            this.setState({ showLoader: true });
+            this.timeSlot.classList.add('time-slot--taken');
+            this.setState({ 
+                showLoader: true
+            });
 
             await this.props.updateTimeSlot(id, user);
 
             this.setState({ showLoader: false });
         }
+    }
+
+    cancelTimeSlot(_id) {
+        this.props.updateTimeSlot(_id, null);
+        this.setState({ overlayHidden: true });
     }
 
     setDisabledAttribute() {
@@ -37,6 +57,8 @@ class TimeSlot extends Component {
         if (this.props.user === null && !this.props.admin) {
             disabled = true;
         } else if (this.props.user && this.props.client !== undefined) {
+
+            // Time slot has a client - check if client isnt same as user or empty, if so disable
             if (this.props.user.displayName !== this.props.client && this.props.client !== '') {
                 disabled = true;
             }
@@ -61,16 +83,15 @@ class TimeSlot extends Component {
     }
 
     render({ _id, name, dateFormatted, client, admin, user }) {
-        let defaultInputValue = user
-            ? user.mail
-            : ''
-        
         const additionalClasses = client !== '' ? 'time-slot--taken' : '';
         const disabled = this.setDisabledAttribute();
         const avatar = this.setAvatarPicture(name);
+        const timeSlotControlModifier = !disabled && client !== '' 
+            ? 'time-slot__control--cancel'
+            : 'time-slot__control--add'
         
         return (
-            <button id={_id} class={`time-slot ${additionalClasses}`} disabled={disabled} onClick={(e) => this.handleClick(e, _id)}>
+            <div ref={timeSlot => this.timeSlot = timeSlot} id={_id} class={`time-slot ${additionalClasses}`} disabled={disabled}>
                 {this.state.showLoader &&
                     <Loader />
                 }
@@ -81,22 +102,25 @@ class TimeSlot extends Component {
                     }
                 </picture> 
                 
-                <span class="time-slot__label">
-                    {client !== '' ? (
-                        client
-                    ) : (
-                        dateFormatted
-                    )}
-                </span>
-
-                {/* {admin && client !== '' &&
-                    <button class="time-slot__remove-btn" onClick={() => this.props.removeTimeSlot(_id)}></button>
+                <span class="time-slot__label">{client !== '' ? ( client ) : ( dateFormatted )}</span>
+                
+                {user && !disabled &&
+                    <span className={`time-slot__control ${timeSlotControlModifier}`} onClick={(e) => this.handleClick(e)}></span>
                 }
 
-                {!disabled && client !== '' && !admin &&
-                    <button class="time-slot__remove-btn" onClick={() => this.props.updateTimeSlot(_id, null)}></button>
-                } */}
-            </button>
+                <div class="time-slot__overlay" aria-hidden={this.state.overlayHidden ? 'true' : 'false'} onClick={e => e.preventDefault()}>
+                    <div class="time-slot__overlay-btn-group">
+                        {!disabled && client !== '' && !admin ? (
+                            <button class="time-slot__overlay-btn" onClick={() => this.cancelTimeSlot(_id)}>Remove</button>
+                        ) : (
+                            <button class="time-slot__overlay-btn" onClick={() => this.confirmTimeSlot(_id)}>Confirm</button>
+                        )}
+                        <button class="time-slot__overlay-btn" onClick={(e) => this.hideOverlay(e)}>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
         )
     }
 }
