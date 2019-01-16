@@ -89,6 +89,9 @@ class TimeSlot extends Component {
         const timeSlotControlModifier = !disabled && client !== '' 
             ? 'time-slot__control--cancel'
             : 'time-slot__control--add'
+        const label = client !== ''
+            ? `<span>${dateFormatted}</span><br />${client}`
+            : dateFormatted
         
         return (
             <div ref={timeSlot => this.timeSlot = timeSlot} id={_id} class={`time-slot ${additionalClasses}`} disabled={disabled}>
@@ -102,7 +105,7 @@ class TimeSlot extends Component {
                     }
                 </picture> 
                 
-                <span class="time-slot__label">{client !== '' ? ( client ) : ( dateFormatted )}</span>
+                <span class="time-slot__label" dangerouslySetInnerHTML={{ __html: label }}></span>
                 
                 {user && !disabled &&
                     <span className={`time-slot__control ${timeSlotControlModifier}`} onClick={(e) => this.handleClick(e)}></span>
