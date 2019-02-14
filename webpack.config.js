@@ -75,13 +75,6 @@ module.exports = (env, options) => {
 
         plugins: [
             new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-            // new HTMLWebpackPlugin({
-            //     inject: false,
-            //     hash: true,
-            //     template: './client/index.html',
-            //     filename: 'index.html',
-            //     rootPath: options.mode === 'development' ? 'http://localhost:3001' : 'https://gg-massage-booker.herokuapp.com'
-            // }),
             new ExtractTextPlugin({ filename: '[name].css', allChunks: true }),
             new CopyWebpackPlugin([{
                 from: './favicon.ico'
