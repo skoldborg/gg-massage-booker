@@ -56,7 +56,7 @@ class AddTimeSlot extends Component {
                         <Datetime 
                             class="add-time-slot__rdt"
                             timeFormat="HH:mm"
-                            onChange={date => this.setDateTime(date)}
+                            onChange={this.setDateTime.bind(this)}
                         />
                     </div>
                 </div>
