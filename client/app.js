@@ -1,7 +1,6 @@
-import { h, render } from 'preact';
-
+import React from 'react';
+import { render } from 'react-dom';
 import { App } from './components';
-import styles from './styles/styles.scss';
 
 render(
     <App />, 

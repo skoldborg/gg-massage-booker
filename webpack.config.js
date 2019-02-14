@@ -8,11 +8,14 @@ const path = require('path');
 
 module.exports = (env, options) => {
     return {
-        entry: ['babel-polyfill', path.join(__dirname, 'client/app.js')],
+        entry: {
+            app: ['babel-polyfill', path.join(__dirname, 'client/app.js')],
+            styles: path.join(__dirname, 'client/styles/styles.scss')
+        },
         
         output: {
             path: path.join(__dirname, 'dist'),
-            filename: 'app.js',
+            filename: '[name].js',
             publicPath: ''
         },
 
@@ -90,11 +93,7 @@ module.exports = (env, options) => {
         ],
         
         resolve: {
-            extensions: ['.js', '.jsx'],
-            alias: {
-                'react': 'preact-compat',
-                'react-dom': 'preact-compat'
-            }
+            extensions: ['.js', '.jsx']
         }
     }
 }

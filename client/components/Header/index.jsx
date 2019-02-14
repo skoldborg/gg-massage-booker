@@ -1,4 +1,4 @@
-import { h, render, Component } from 'preact';
+import React, { Component } from 'react';
 
 import rootPath from '../../utils/rootPath';
 
@@ -32,7 +32,7 @@ class Header extends Component {
                     <ul className="header__nav">
                         <li className="header__nav-item">
                             {!userSignedIn ? (
-                                <a href={`${rootPath}/signin`} class="header__nav-link">Logga in</a>
+                                <a href={`${rootPath}/signin`} className="header__nav-link">Logga in</a>
                             ) : (
                                 <div className="header__avatar">
                                     {userPhotoBlob && userPhotoBlob.type === 'image/jpeg' ? (

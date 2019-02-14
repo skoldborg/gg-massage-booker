@@ -1,13 +1,13 @@
 import 'whatwg-fetch';
-import { h, render, Component } from 'preact';
+import React, { Component } from 'react';
 
 import { TimeSlotsManager } from '../../components';
 
 class Admin extends Component {
     render() {
         return (
-            <div class="main">
-                <h2 class="main__subtitle">Tider</h2>
+            <div className="main">
+                <h2 className="main__subtitle">Tider</h2>
 
                 <TimeSlotsManager admin={true} />
             </div>

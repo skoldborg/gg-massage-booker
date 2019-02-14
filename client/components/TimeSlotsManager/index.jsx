@@ -1,7 +1,7 @@
-import { h, render, Component } from 'preact';
+import React, { Component } from 'react';
 import moment from 'moment';
 
-import { TimeSlot, AddTimeSlot, Loader } from '../../components';
+import { TimeSlot, AddTimeSlot } from '../../components';
 import requestService from '../../utils/requestService';
 import rootPath from '../../utils/rootPath';
 
@@ -124,7 +124,8 @@ class TimeSlotsManager extends Component {
         await requestService.postRequest('https://graph.microsoft.com/beta/me/events', opts, true, token);
     }
 
-    render({ user, admin }) {
+    render() {
+        const { user, admin } = this.props;
         const monthsMap = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: [], 11: [] };
         const monthNames = ['Jan', 'Feb', 'Mars', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sept', 'Okt', 'Nov', 'Dec'];
 
@@ -145,15 +146,15 @@ class TimeSlotsManager extends Component {
         });
 
         return (
-            <div class="time-slots-manager">
-                <div class={`time-slots-manager__list `}>
+            <div className="time-slots-manager">
+                <div className={`time-slots-manager__list `}>
                     {Object.keys(monthsMap).map(key => {
                         if (monthsMap[key].length > 0) {
                             return (
-                                <div class="time-slots-manager__list-col">
-                                    <h3 class="time-slots-manager__list-col-heading">{monthNames[key]}</h3>
-                                    {monthsMap[key].map(timeSlot => {
-                                        return timeSlot
+                                <div key={key} className="time-slots-manager__list-col">
+                                    <h3 className="time-slots-manager__list-col-heading">{monthNames[key]}</h3>
+                                    {monthsMap[key].map((timeSlot, i) => {
+                                        return <span key={i}>{timeSlot}</span>
                                     })}
                                 </div>
                             )
@@ -162,8 +163,8 @@ class TimeSlotsManager extends Component {
                 </div>
 
                 {admin &&
-                    <div class="time-slots-manager__add">
-                        <h2 class="time-slots-manager__subtitle">Lägg till en tid</h2>
+                    <div className="time-slots-manager__add">
+                        <h2 className="time-slots-manager__subtitle">Lägg till en tid</h2>
 
                         <AddTimeSlot addTimeSlot={ (name, time) => this.addTimeSlot(name, time) }/>
                     </div>
