@@ -153,8 +153,6 @@ class TimeSlotsManager extends Component {
                                 <div class="time-slots-manager__list-col">
                                     <h3 class="time-slots-manager__list-col-heading">{monthNames[key]}</h3>
                                     {monthsMap[key].map(timeSlot => {
-                                        console.log(timeSlot);
-                                        
                                         return timeSlot
                                     })}
                                 </div>
