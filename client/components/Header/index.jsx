@@ -27,7 +27,7 @@ class Header extends Component {
         return (
             <header className="header">
                 <div className="header__inner">
-                    <div className="header__logo">GG Massage Booker</div>
+                    <a href="/"><div className="header__logo">GG Massage Booker</div></a>
 
                     <ul className="header__nav">
                         <li className="header__nav-item">
