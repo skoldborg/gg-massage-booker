@@ -70,15 +70,15 @@ class TimeSlot extends Component {
     setAvatarPicture(name) {
         switch (name.toLowerCase()) {
             case 'patrik':
-                return avatarPatrik
+                return <img src={avatarPatrik} />;
             case 'maria':
-                return avatarMaria
+                return <img src={avatarMaria} />;
             case 'martin':
-                return avatarMartin
+                return <img src={avatarMartin} /> ;
             case 'emma':
-                return avatarEmma
+                return  <img src={avatarEmma} />;
             default:
-                return undefined;
+                return <span>{name.substring(0, 1)}</span>;
         }
     }
 
@@ -102,7 +102,7 @@ class TimeSlot extends Component {
 
                 <picture className="time-slot__avatar">
                     {avatar !== undefined &&
-                        <img src={avatar}></img>
+                        this.setAvatarPicture(name)
                     }
                 </picture> 
                 
