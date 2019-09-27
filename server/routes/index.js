@@ -2,7 +2,11 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-const authHelper = require('../helpers/auth');
+// Slack integration
+const { IncomingWebhook } = require('@slack/webhook');
+const webhookUrl = 'https://hooks.slack.com/services/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';
+const webhook = new IncomingWebhook(webhookUrl);
+
 const auth = require('./auth');
 const TimeSlot = mongoose.model('TimeSlot');
 
@@ -22,6 +26,10 @@ router.post('/timeslots', async (req, res) => {
     try {
         const timeSlot = new TimeSlot(req.body);
         await timeSlot.save();
+
+        await webhook.send({
+            text: 'Timeslot added for Patrik'
+        });
 
         res.status(200).send('Time slot saved');
     } catch (error) {

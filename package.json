@@ -12,6 +12,7 @@
   "author": "Pierre Sköldborg <pierre.skoldborg@creuna.se>",
   "license": "ISC",
   "dependencies": {
+    "@slack/webhook": "^5.0.2",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
