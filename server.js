@@ -20,6 +20,7 @@ mongoose.Promise = global.Promise;
 // View engine
 app.engine('hbs', exphbs({
     extname: '.hbs',
+    defaultLayout: 'index',
     layoutsDir: path.join(__dirname, 'server/views/')
 }));
 app.set('view engine', 'hbs');
