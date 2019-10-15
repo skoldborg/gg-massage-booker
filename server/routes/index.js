@@ -23,16 +23,21 @@ router.get('/timeslots', async (req, res) => {
 })
 
 router.post('/timeslots', async (req, res) => {
+    
     try {
         const timeSlot = new TimeSlot(req.body);
         await timeSlot.save();
-
-        await webhook.send({
-            text: 'Timeslot added for Patrik'
-        });
+        
+        if (req.body['name'].toLowerCase() === 'patrik') {
+            await webhook.send({
+                text: 'Timeslot added for Patrik'
+            });
+        }
 
         res.status(200).send('Time slot saved');
     } catch (error) {
+        console.log('er', error);
+        
         res.status(500).send(`Time slot not saved: ${error}`);
     }
 })
