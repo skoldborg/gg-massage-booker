@@ -7,6 +7,7 @@ import avatarPatrik from './img/avatar-patrik.png';
 import avatarMaria from './img/avatar-maria.png';
 import avatarMartin from './img/avatar-martin.png';
 import avatarEmma from './img/avatar-emma.png';
+import avatarHenrik from './img/avatar-henrik.png';
 
 class TimeSlot extends Component {
     constructor() {
@@ -77,6 +78,8 @@ class TimeSlot extends Component {
                 return <img src={avatarMartin} /> ;
             case 'emma':
                 return  <img src={avatarEmma} />;
+            case 'henrik':
+                return <img src={avatarHenrik} />;
             default:
                 return <span>{name.substring(0, 1)}</span>;
         }
