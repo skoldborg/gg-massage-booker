@@ -10,33 +10,44 @@ const favicon = require('serve-favicon');
 const exphbs = require('express-handlebars');
 const app = express();
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }, (error) => {
-    if (error) console.error(`Mongoose connection failed with the following error: ${error}`);
+mongoose.connect(
+    process.env.MONGODB_URI,
+    {
+        useUnifiedTopology: true,
+        useNewUrlParser: true
+    },
+    error => {
+        if (error) {
+            console.error(
+                `Mongoose connection failed with the following error ${error}`
+            );
+        }
 
-    console.log('Mongoose connection successful');
-});
+        console.log("Mongoose connection successful");
+    }
+);
 mongoose.Promise = global.Promise;
 
 // View engine
 app.engine('hbs', exphbs({
     extname: '.hbs',
     defaultLayout: 'index',
-    layoutsDir: path.join(__dirname, 'server/views/')
+    layoutsDir: path.join(__dirname, 'views/')
 }));
 app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'server/views/'));
+app.set('views', path.join(__dirname, 'views/'));
 
 // Cookies
 app.use(cookieParser())
 
 // Static assets
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, '../dist')));
 
 // Favicon
-app.use(favicon(path.join(__dirname, 'favicon.ico')));
+app.use(favicon(path.join(__dirname, '../favicon.ico')));
 
 // Import models
-require(path.join(__dirname, 'server/models/TimeSlot'));
+require(path.join(__dirname, 'models/TimeSlot'));
 
 // Parse urlencoded form data
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -47,7 +58,7 @@ app.use(cors());
 app.options('*', cors());
 
 // Routes
-const router = require('./server/routes/index');
+const router = require(path.join(__dirname, 'routes/index'));
 app.use('/', router);
 
 const viewRoute = process.env.NODE_ENV === 'production' ? 'dist' : 'client';
@@ -57,10 +68,6 @@ app.get('/*', (req, res) => {
         rootPath: process.env.NODE_ENV === 'production' ? 'https://gg-massage-booker.herokuapp.com' : 'http://localhost:3001'
     });
 })
-
-// Kill node process on terminal exit & exceptions
-// process.on('SIGINT', () => { process.exit(); });
-// process.on('uncaughtException', () => { process.exit(); })
 
 // Start server
 const PORT = process.env.PORT || 3001;
